@@ -1046,6 +1046,7 @@
       if (cmd) { e.preventDefault(); document.execCommand(cmd, false, null); }
       if (key === "e" && !shift) { e.preventDefault(); toggleInlineCode(area); }
       if (key === "e" && shift) { e.preventDefault(); insertCodeBlock(area); }
+      if (withBlank && key === "b" && shift) { e.preventDefault(); makeBlank(area); }
     });
 
     cmds.forEach(c => {
@@ -1082,7 +1083,7 @@
 
     if (withBlank) {
       bar.appendChild(el("span", "sep"));
-      const bb = el("button", "wide", "▭ Blank"); bb.type = "button"; bb.title = "Hide selected text as a blank";
+      const bb = el("button", "wide", "▭ Blank"); bb.type = "button"; bb.title = "Hide selected text as a blank (Ctrl+Shift+B)";
       bb.onmousedown = e => e.preventDefault();
       bb.onclick = () => makeBlank(area);
       bar.appendChild(bb);
@@ -1256,7 +1257,7 @@
         fillRTE = buildRTE(editing && editing.type === "fill" ? editing.prompt : "", "Type a sentence, then select a word and press Blank…", true);
         f.appendChild(fillRTE); body.appendChild(f);
         body.appendChild(el("div", "hint",
-          `Select any word and hit <b>▭ Blank</b> to hide it. For alternatives, select text like <code>color|colour</code> before blanking — any of them counts as correct. Click a blank to remove it.`));
+          `Select any word and hit <b>▭ Blank</b> (or <b>Ctrl+Shift+B</b>) to hide it. For alternatives, select text like <code>color|colour</code> before blanking — any of them counts as correct. Click a blank to remove it.`));
       }
     }
     drawBody();

@@ -427,8 +427,10 @@
         /* ---------- Sidebar collapse (desktop) + backdrop (mobile) ---------- */
         .sidebar { transition: transform .22s; }
         .app.sidebar-collapsed { grid-template-columns: 1fr; }
-        .app.sidebar-collapsed .sidebar { display: none; }
         .app.sidebar-collapsed .menu-btn { display: inline-flex !important; }
+        @media (min-width: 861px) {
+            .app.sidebar-collapsed .sidebar { display: none; }
+        }
         .sidebar-collapse-btn {
             border: none; background: none; color: var(--ink-faint); font-size: 15px;
             padding: 6px; border-radius: 7px; cursor: pointer; line-height: 1;
@@ -1542,6 +1544,7 @@
   menuBtn.onclick = () => {
     if (appEl.classList.contains("sidebar-collapsed")) {
       appEl.classList.remove("sidebar-collapsed"); // desktop: un-collapse
+      sidebar.classList.add("open"); // mobile: also slide in (no-op on desktop)
     } else {
       sidebar.classList.toggle("open"); // mobile: slide in/out
     }

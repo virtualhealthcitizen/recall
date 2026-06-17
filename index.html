@@ -275,6 +275,38 @@
         .rte-area b, .rte-area strong { font-weight: 700; }
         .rte-area ul, .rte-area ol { margin: 6px 0; padding-left: 22px; }
 
+        /* Code snippets — inline and block, in editor + study views */
+        code {
+            font-family: var(--mono); font-size: .88em;
+            background: var(--surface-2); padding: 1px 6px; border-radius: 5px;
+        }
+        pre {
+            background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm);
+            padding: 12px 14px; margin: 8px 0; overflow-x: auto; text-align: left;
+        }
+        pre code {
+            background: none; padding: 0; border-radius: 0; font-size: inherit;
+            display: block; white-space: pre-wrap; word-break: break-word; line-height: 1.55;
+        }
+        .face-content code, .fill-prompt code { font-size: .82em; }
+        .face-content pre, .fill-prompt pre {
+            font-family: var(--mono); font-size: 14px; font-weight: 400;
+            max-height: 200px; overflow-y: auto; width: 100%;
+        }
+        .rte-area pre { background: var(--surface-2); }
+        .rte-bar .code-size-wrap {
+            display: flex; align-items: center; gap: 4px; margin-left: 2px;
+        }
+        .rte-bar .code-size-wrap label {
+            font-size: 10.5px; color: var(--ink-faint); font-weight: 600; letter-spacing: .03em; white-space: nowrap;
+        }
+        .code-size-sel {
+            font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+            background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px;
+            color: var(--ink-soft); padding: 3px 4px; outline: none; cursor: pointer;
+        }
+        .code-size-sel:focus { border-color: var(--accent); }
+
         .blank {
             background: var(--amber-soft); color: var(--amber); font-weight: 600;
             padding: 1px 7px; border-radius: 6px; border-bottom: 2px solid var(--amber); cursor: pointer; white-space: nowrap;
@@ -440,6 +472,8 @@
         [data-density="compact"] .rte-bar button { width: 26px; height: 26px; font-size: 12.5px; }
         [data-density="compact"] .empty { padding: 36px 16px; }
         [data-density="compact"] .empty .big { font-size: 17px; }
+        [data-density="compact"] pre { padding: 9px 11px; margin: 6px 0; }
+        [data-density="compact"] .code-size-sel { font-size: 10.5px; padding: 2px 3px; }
     </style>
 </head>
 <body>
@@ -986,6 +1020,8 @@
       else if (key === "8" && shift) cmd = "insertUnorderedList";
       else if (key === "7" && shift) cmd = "insertOrderedList";
       if (cmd) { e.preventDefault(); document.execCommand(cmd, false, null); }
+      if (key === "e" && !shift) { e.preventDefault(); toggleInlineCode(area); }
+      if (key === "e" && shift) { e.preventDefault(); insertCodeBlock(area); }
     });
 
     cmds.forEach(c => {
@@ -995,6 +1031,31 @@
       b.onclick = () => { area.focus(); document.execCommand(c[0], false, null); };
       bar.appendChild(b);
     });
+    // Code snippet buttons
+    bar.appendChild(el("span", "sep"));
+    const codeBtn = el("button", null, "<code>&lt;/&gt;</code>"); codeBtn.type = "button"; codeBtn.title = "Inline code (Ctrl+E)";
+    codeBtn.onmousedown = e => e.preventDefault();
+    codeBtn.onclick = () => { area.focus(); toggleInlineCode(area); };
+    bar.appendChild(codeBtn);
+    const blockBtn = el("button", null, "{…}"); blockBtn.type = "button"; blockBtn.title = "Code block (Ctrl+Shift+E)";
+    blockBtn.onmousedown = e => e.preventDefault();
+    blockBtn.onclick = () => { area.focus(); insertCodeBlock(area); };
+    bar.appendChild(blockBtn);
+    // Code font-size selector
+    const sizeWrap = el("div", "code-size-wrap");
+    sizeWrap.innerHTML = `<label>px</label>`;
+    const sizeSel = el("select", "code-size-sel");
+    [11, 12, 13, 14, 15, 16, 18, 20].forEach(s => {
+      const o = el("option", null, s); o.value = s;
+      if (s === 14) o.selected = true;
+      sizeSel.appendChild(o);
+    });
+    sizeSel.title = "Code font size — click inside a code snippet first";
+    sizeSel.onmousedown = e => e.stopPropagation();
+    sizeSel.onchange = () => { applyCodeSize(area, sizeSel.value); area.focus(); };
+    sizeWrap.prepend(sizeSel);
+    bar.appendChild(sizeWrap);
+
     if (withBlank) {
       bar.appendChild(el("span", "sep"));
       const bb = el("button", "wide", "▭ Blank"); bb.type = "button"; bb.title = "Hide selected text as a blank";
@@ -1012,6 +1073,72 @@
     wrap._getHTML = () => sanitize(area.innerHTML).trim();
     wrap._area = area;
     return wrap;
+  }
+
+  function toggleInlineCode(area) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    if (!area.contains(range.commonAncestorContainer)) return;
+    // Check if cursor is already inside an inline <code> (not inside <pre>)
+    const anchor = range.commonAncestorContainer.nodeType === 3 ? range.commonAncestorContainer.parentElement : range.commonAncestorContainer;
+    const existing = anchor ? anchor.closest("code") : null;
+    if (existing && !existing.closest("pre") && area.contains(existing)) {
+      // Unwrap: replace <code> with its text content
+      const t = document.createTextNode(existing.textContent);
+      existing.replaceWith(t);
+      area.normalize();
+      return;
+    }
+    if (sel.isCollapsed) {
+      const code = document.createElement("code");
+      code.textContent = "\u200B";
+      range.insertNode(code);
+      const r2 = document.createRange();
+      r2.selectNodeContents(code);
+      sel.removeAllRanges(); sel.addRange(r2);
+      return;
+    }
+    const text = sel.toString();
+    const code = document.createElement("code");
+    code.textContent = text;
+    range.deleteContents();
+    range.insertNode(code);
+    const r2 = document.createRange();
+    r2.selectNodeContents(code);
+    sel.removeAllRanges(); sel.addRange(r2);
+  }
+
+  function insertCodeBlock(area) {
+    const sel = window.getSelection();
+    const text = sel.rangeCount && !sel.isCollapsed ? sel.toString() : "";
+    const range = sel.rangeCount ? sel.getRangeAt(0) : null;
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+    code.textContent = text || "\n";
+    pre.appendChild(code);
+    if (range && area.contains(range.commonAncestorContainer)) {
+      if (!sel.isCollapsed) range.deleteContents();
+      range.insertNode(pre);
+    } else {
+      area.appendChild(pre);
+    }
+    // Place cursor inside
+    const r2 = document.createRange();
+    r2.selectNodeContents(code);
+    r2.collapse(text ? false : true);
+    sel.removeAllRanges(); sel.addRange(r2);
+    area.focus();
+  }
+
+  function applyCodeSize(area, px) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) { toast("Click inside a code snippet first"); return; }
+    const anchor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement : sel.anchorNode;
+    if (!anchor || !area.contains(anchor)) { toast("Click inside a code snippet first"); return; }
+    const target = anchor.closest("pre") || anchor.closest("code");
+    if (!target || !area.contains(target)) { toast("Click inside a code snippet first"); return; }
+    target.style.fontSize = px + "px";
   }
 
   function makeBlank(area) {

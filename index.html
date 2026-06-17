@@ -424,6 +424,24 @@
         }
         .menu-btn { display: none; }
 
+        /* ---------- Sidebar collapse (desktop) + backdrop (mobile) ---------- */
+        .sidebar { transition: transform .22s; }
+        .app.sidebar-collapsed { grid-template-columns: 1fr; }
+        .app.sidebar-collapsed .sidebar { display: none; }
+        .app.sidebar-collapsed .menu-btn { display: inline-flex !important; }
+        .sidebar-collapse-btn {
+            border: none; background: none; color: var(--ink-faint); font-size: 15px;
+            padding: 6px; border-radius: 7px; cursor: pointer; line-height: 1;
+        }
+        .sidebar-collapse-btn:hover { background: var(--surface-2); color: var(--ink); }
+        .sidebar-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 39;
+            background: rgba(15,17,25,.35); backdrop-filter: blur(2px);
+        }
+        @media (max-width: 860px) {
+            .sidebar.open + .sidebar-backdrop { display: block; animation: fade .18s; }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
         }
@@ -493,8 +511,10 @@
             <button class="btn btn-sm" id="exportBtn" title="Save to file">Export</button>
             <button class="btn btn-sm btn-icon" id="densityBtn" title="Toggle compact view" style="margin-left:auto">▤</button>
             <button class="btn btn-sm btn-icon" id="themeBtn" title="Toggle theme">◐</button>
+            <button class="sidebar-collapse-btn" id="collapseBtn" title="Collapse sidebar">«</button>
         </div>
     </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <!-- Main -->
     <div class="main">
@@ -1006,6 +1026,8 @@
 
     // keyboard shortcuts for formatting (conventional keys)
     area.addEventListener("keydown", e => {
+      // Escape exits inline code without unwrapping (no Ctrl needed)
+      if (e.key === "Escape" && exitInlineCode(area)) { e.preventDefault(); return; }
       const ctrl = e.ctrlKey || e.metaKey;
       if (!ctrl) return;
       const key = e.key.toLowerCase();
@@ -1033,7 +1055,7 @@
     });
     // Code snippet buttons
     bar.appendChild(el("span", "sep"));
-    const codeBtn = el("button", null, "<code>&lt;/&gt;</code>"); codeBtn.type = "button"; codeBtn.title = "Inline code (Ctrl+E)";
+    const codeBtn = el("button", null, "<code>&lt;/&gt;</code>"); codeBtn.type = "button"; codeBtn.title = "Inline code (Ctrl+E · Esc to exit)";
     codeBtn.onmousedown = e => e.preventDefault();
     codeBtn.onclick = () => { area.focus(); toggleInlineCode(area); };
     bar.appendChild(codeBtn);
@@ -1075,6 +1097,30 @@
     return wrap;
   }
 
+  function ensureExitNode(node) {
+    // Guarantee a text node exists right after an inline element so the cursor
+    // can be placed there. Without this, contentEditable traps the cursor inside.
+    if (!node.nextSibling || (node.nextSibling.nodeType !== 3)) {
+      node.parentNode.insertBefore(document.createTextNode("\u200B"), node.nextSibling);
+    }
+    return node.nextSibling;
+  }
+
+  function exitInlineCode(area) {
+    // Move cursor out of the nearest inline <code> (not <pre><code>).
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return false;
+    const anchor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement : sel.anchorNode;
+    const code = anchor?.closest?.("code");
+    if (!code || code.closest("pre") || !area.contains(code)) return false;
+    const exit = ensureExitNode(code);
+    const r = document.createRange();
+    r.setStart(exit, exit.length);
+    r.collapse(true);
+    sel.removeAllRanges(); sel.addRange(r);
+    return true;
+  }
+
   function toggleInlineCode(area) {
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
@@ -1091,21 +1137,26 @@
       return;
     }
     if (sel.isCollapsed) {
+      // Empty code span for the user to type into; add exit node so they can leave
       const code = document.createElement("code");
       code.textContent = "\u200B";
       range.insertNode(code);
+      ensureExitNode(code);
       const r2 = document.createRange();
       r2.selectNodeContents(code);
       sel.removeAllRanges(); sel.addRange(r2);
       return;
     }
+    // Wrap selection — place cursor AFTER the code element, not inside
     const text = sel.toString();
     const code = document.createElement("code");
     code.textContent = text;
     range.deleteContents();
     range.insertNode(code);
+    const exit = ensureExitNode(code);
     const r2 = document.createRange();
-    r2.selectNodeContents(code);
+    r2.setStart(exit, exit.length);
+    r2.collapse(true);
     sel.removeAllRanges(); sel.addRange(r2);
   }
 
@@ -1487,9 +1538,17 @@
     root.setAttribute("data-density", compact ? "normal" : "compact");
     $("#densityBtn").title = compact ? "Toggle compact view" : "Toggle normal view";
   };
-  const menuBtn = $("#menuBtn"), sidebar = $("#sidebar");
-  menuBtn.onclick = () => sidebar.classList.toggle("open");
+  const menuBtn = $("#menuBtn"), sidebar = $("#sidebar"), appEl = $(".app");
+  menuBtn.onclick = () => {
+    if (appEl.classList.contains("sidebar-collapsed")) {
+      appEl.classList.remove("sidebar-collapsed"); // desktop: un-collapse
+    } else {
+      sidebar.classList.toggle("open"); // mobile: slide in/out
+    }
+  };
   function closeSidebar() { sidebar.classList.remove("open"); }
+  $("#collapseBtn").onclick = () => { appEl.classList.add("sidebar-collapsed"); closeSidebar(); };
+  $("#sidebarBackdrop").onclick = closeSidebar;
 
   // expose for inline onclick handlers
   window.openDeckEditor = openDeckEditor;

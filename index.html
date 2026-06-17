@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-density="normal">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recall — Flashcards</title>
     <link rel="icon" href="data:," /><!-- empty inline icon: prevents the browser's automatic favicon.ico request, which is blocked on file:// pages -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <!-- No external requests: the app uses system fonts so it works fully offline / on a private network. -->
     <style>
         :root {
             --display: "Space Grotesk", system-ui, sans-serif;
@@ -397,6 +395,51 @@
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
         }
+
+        /* ---------- Compact density ---------- */
+        [data-density="compact"] .brand { padding: 12px 14px 8px; }
+        [data-density="compact"] .brand-mark { width: 24px; height: 24px; font-size: 13px; border-radius: 6px; }
+        [data-density="compact"] .brand-name { font-size: 16px; }
+        [data-density="compact"] .nav-item { padding: 5px 8px; font-size: 13px; gap: 7px; }
+        [data-density="compact"] .nav-deck { padding-left: 24px; font-size: 12px; }
+        [data-density="compact"] .nav-section-label { padding: 10px 8px 4px; font-size: 10px; }
+        [data-density="compact"] .sidebar-foot { padding: 8px 10px; }
+        [data-density="compact"] .topbar { padding: 9px 18px; gap: 10px; }
+        [data-density="compact"] .search { padding: 6px 10px; }
+        [data-density="compact"] .search input { font-size: 13px; }
+        [data-density="compact"] .content { padding: 18px; }
+        [data-density="compact"] .page-title { font-size: 24px; }
+        [data-density="compact"] .page-sub { font-size: 13px; }
+        [data-density="compact"] .stat-strip { gap: 10px; margin-bottom: 18px; }
+        [data-density="compact"] .stat { padding: 11px 14px; border-radius: 10px; }
+        [data-density="compact"] .stat .num { font-size: 22px; }
+        [data-density="compact"] .stat .lbl { font-size: 11.5px; }
+        [data-density="compact"] .deck-grid { gap: 12px; }
+        [data-density="compact"] .deck-card { padding: 14px; gap: 9px; border-radius: 10px; }
+        [data-density="compact"] .deck-card h3 { font-size: 15px; }
+        [data-density="compact"] .deck-card .desc { font-size: 12px; }
+        [data-density="compact"] .deck-meta { font-size: 11.5px; gap: 10px; }
+        [data-density="compact"] .ring { width: 38px; height: 38px; }
+        [data-density="compact"] .card-row { padding: 9px 12px; gap: 10px; margin-bottom: 6px; }
+        [data-density="compact"] .card-row .preview .q { font-size: 13.5px; }
+        [data-density="compact"] .card-row .preview .a { font-size: 12px; }
+        [data-density="compact"] .type-tag { font-size: 9.5px; padding: 2px 6px; }
+        [data-density="compact"] .chip { font-size: 11px; padding: 2px 7px; }
+        [data-density="compact"] .session-banner { padding: 7px 11px; font-size: 11.5px; }
+        [data-density="compact"] .btn { padding: 6px 11px; font-size: 12.5px; border-radius: 8px; }
+        [data-density="compact"] .btn-sm { padding: 5px 8px; font-size: 11.5px; }
+        [data-density="compact"] .btn-icon { padding: 6px; }
+        [data-density="compact"] .modal { border-radius: 14px; }
+        [data-density="compact"] .modal-head { padding: 16px 20px 0; }
+        [data-density="compact"] .modal-head h2 { font-size: 18px; }
+        [data-density="compact"] .modal-body { padding: 14px 20px; }
+        [data-density="compact"] .modal-foot { padding: 10px 20px 16px; }
+        [data-density="compact"] .field { margin-bottom: 12px; }
+        [data-density="compact"] .input, [data-density="compact"] .select { padding: 8px 10px; font-size: 13px; border-radius: 8px; }
+        [data-density="compact"] .rte-area { min-height: 72px; padding: 10px 12px; font-size: 14px; }
+        [data-density="compact"] .rte-bar button { width: 26px; height: 26px; font-size: 12.5px; }
+        [data-density="compact"] .empty { padding: 36px 16px; }
+        [data-density="compact"] .empty .big { font-size: 17px; }
     </style>
 </head>
 <body>
@@ -414,7 +457,8 @@
         <div class="sidebar-foot">
             <button class="btn btn-sm" id="importBtn" title="Import from file">Import</button>
             <button class="btn btn-sm" id="exportBtn" title="Save to file">Export</button>
-            <button class="btn btn-sm btn-icon" id="themeBtn" title="Toggle theme" style="margin-left:auto">◐</button>
+            <button class="btn btn-sm btn-icon" id="densityBtn" title="Toggle compact view" style="margin-left:auto">▤</button>
+            <button class="btn btn-sm btn-icon" id="themeBtn" title="Toggle theme">◐</button>
         </div>
     </aside>
 
@@ -915,15 +959,34 @@
     const wrap = el("div", "rte");
     const bar = el("div", "rte-bar");
     const cmds = [
-      ["bold", "<b>B</b>", "Bold"], ["italic", "<i>I</i>", "Italic"],
-      ["underline", "<u>U</u>", "Underline"], ["strikeThrough", "<s>S</s>", "Strikethrough"],
-      ["sep"], ["insertUnorderedList", "•", "Bullet list"], ["insertOrderedList", "1.", "Numbered list"],
+      ["bold", "<b>B</b>", "Bold (Ctrl+B)"], ["italic", "<i>I</i>", "Italic (Ctrl+I)"],
+      ["underline", "<u>U</u>", "Underline (Ctrl+U)"], ["strikeThrough", "<s>S</s>", "Strikethrough (Ctrl+Shift+S)"],
+      ["sep"], ["insertUnorderedList", "•", "Bullet list (Ctrl+Shift+8)"], ["insertOrderedList", "1.", "Numbered list (Ctrl+Shift+7)"],
+      ["indent", "⇥", "Indent (Ctrl+])"], ["outdent", "⇤", "Outdent (Ctrl+[)"],
       ["sep"], ["removeFormat", "⨯", "Clear formatting"],
     ];
     const area = el("div", "rte-area");
     area.contentEditable = "true";
     area.setAttribute("data-placeholder", placeholder || "");
     area.innerHTML = sanitize(initialHTML || "");
+
+    // keyboard shortcuts for formatting (conventional keys)
+    area.addEventListener("keydown", e => {
+      const ctrl = e.ctrlKey || e.metaKey;
+      if (!ctrl) return;
+      const key = e.key.toLowerCase();
+      const shift = e.shiftKey;
+      let cmd = null;
+      if (key === "b" && !shift) cmd = "bold";
+      else if (key === "i" && !shift) cmd = "italic";
+      else if (key === "u" && !shift) cmd = "underline";
+      else if (key === "s" && shift) cmd = "strikeThrough";
+      else if (key === "]") cmd = "indent";
+      else if (key === "[") cmd = "outdent";
+      else if (key === "8" && shift) cmd = "insertUnorderedList";
+      else if (key === "7" && shift) cmd = "insertOrderedList";
+      if (cmd) { e.preventDefault(); document.execCommand(cmd, false, null); }
+    });
 
     cmds.forEach(c => {
       if (c[0] === "sep") { bar.appendChild(el("span", "sep")); return; }
@@ -942,7 +1005,7 @@
     // click a blank pill to remove it
     area.addEventListener("click", e => {
       const b = e.target.closest(".blank");
-      if (b && area.contains(b)) { const t = document.createTextNode(b.textContent); b.replaceWith(t); }
+      if (b && area.contains(b)) { const t = document.createTextNode(b.textContent); b.replaceWith(t); area.normalize(); }
     });
 
     wrap.appendChild(bar); wrap.appendChild(area);
@@ -961,10 +1024,16 @@
     const span = document.createElement("span");
     span.className = "blank";
     span.setAttribute("data-answer", text);
+    span.setAttribute("contenteditable", "false"); // atomic: cursor can't enter, prevents yellow leak
     span.textContent = text;
     range.deleteContents();
     range.insertNode(span);
+    // place cursor right after the blank so typing resumes in normal text
+    const afterRange = document.createRange();
+    afterRange.setStartAfter(span);
+    afterRange.collapse(true);
     sel.removeAllRanges();
+    sel.addRange(afterRange);
     area.focus();
   }
 
@@ -1284,6 +1353,12 @@
   $("#themeBtn").onclick = () => {
     const root = document.documentElement;
     root.setAttribute("data-theme", root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  };
+  $("#densityBtn").onclick = () => {
+    const root = document.documentElement;
+    const compact = root.getAttribute("data-density") === "compact";
+    root.setAttribute("data-density", compact ? "normal" : "compact");
+    $("#densityBtn").title = compact ? "Toggle compact view" : "Toggle normal view";
   };
   const menuBtn = $("#menuBtn"), sidebar = $("#sidebar");
   menuBtn.onclick = () => sidebar.classList.toggle("open");

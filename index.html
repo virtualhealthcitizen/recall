@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recall — Flashcards</title>
+    <link rel="icon" href="data:," /><!-- empty inline icon: prevents the browser's automatic favicon.ico request, which is blocked on file:// pages -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --display: "Space Grotesk", system-ui, sans-serif;
+            --body: "Inter", system-ui, sans-serif;
+            --mono: "JetBrains Mono", ui-monospace, monospace;
+
+            --bg: #f3f4f7;
+            --surface: #ffffff;
+            --surface-2: #f7f8fa;
+            --ink: #1a1d24;
+            --ink-soft: #565c6b;
+            --ink-faint: #8b91a1;
+            --line: #e5e8ee;
+            --line-strong: #d4d8e0;
+            --accent: #5b53d6;
+            --accent-soft: #ece9fc;
+            --accent-ink: #4840b8;
+            --amber: #f0a93b;
+            --amber-soft: #fbecd2;
+            --green: #2f9e72;
+            --green-soft: #d9f0e5;
+            --red: #d6555b;
+            --red-soft: #fadddf;
+            --radius: 14px;
+            --radius-sm: 9px;
+            --shadow-1: 0 1px 2px rgba(20,26,40,.06), 0 1px 1px rgba(20,26,40,.04);
+            --shadow-2: 0 8px 24px rgba(20,26,40,.10), 0 2px 6px rgba(20,26,40,.06);
+            --shadow-card: 0 18px 50px rgba(28,24,90,.18), 0 6px 14px rgba(28,24,90,.10);
+        }
+        [data-theme="dark"] {
+            --bg: #14161c;
+            --surface: #1d212b;
+            --surface-2: #232834;
+            --ink: #eef1f6;
+            --ink-soft: #aab2c2;
+            --ink-faint: #757d8e;
+            --line: #2c323f;
+            --line-strong: #39404f;
+            --accent: #8b85f0;
+            --accent-soft: #2a2848;
+            --accent-ink: #b4afff;
+            --amber: #f0b85a;
+            --amber-soft: #3a2f1c;
+            --green: #4cc191;
+            --green-soft: #1c3a2d;
+            --red: #ec6f75;
+            --red-soft: #3a2024;
+            --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+            --shadow-2: 0 10px 30px rgba(0,0,0,.5);
+            --shadow-card: 0 22px 60px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.4);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            font-family: var(--body);
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        button { font-family: inherit; cursor: pointer; }
+        input, select, textarea { font-family: inherit; }
+        ::selection { background: var(--accent-soft); }
+
+        /* ---------- Layout shell ---------- */
+        .app { display: grid; grid-template-columns: 264px 1fr; height: 100vh; overflow: hidden; }
+
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--line);
+            display: flex; flex-direction: column;
+            min-height: 0;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 10px;
+            padding: 18px 18px 14px;
+        }
+        .brand-mark {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: linear-gradient(140deg, var(--accent), #8a7cff);
+            display: grid; place-items: center; color: #fff;
+            font-family: var(--display); font-weight: 700; font-size: 16px;
+            box-shadow: var(--shadow-1);
+        }
+        .brand-name { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; }
+        .brand-sub { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); letter-spacing: .04em; margin-top: -2px; }
+
+        .nav { padding: 6px 10px; overflow-y: auto; flex: 1; min-height: 0; }
+        .nav-section-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: .09em;
+            color: var(--ink-faint); font-weight: 600;
+            padding: 14px 10px 6px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-section-label button {
+            border: none; background: none; color: var(--ink-faint); font-size: 16px; line-height: 1;
+            padding: 2px 6px; border-radius: 6px;
+        }
+        .nav-section-label button:hover { background: var(--surface-2); color: var(--accent); }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 10px; border-radius: var(--radius-sm);
+            color: var(--ink-soft); font-weight: 500; font-size: 14px;
+            border: none; background: none; width: 100%; text-align: left;
+        }
+        .nav-item:hover { background: var(--surface-2); color: var(--ink); }
+        .nav-item.active { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+        .nav-item .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+        .nav-item .count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+        .nav-item.active .count { color: var(--accent-ink); }
+        .nav-deck { padding-left: 30px; font-size: 13px; }
+
+        .sidebar-foot { padding: 12px; border-top: 1px solid var(--line); display: flex; gap: 8px; }
+
+        /* ---------- Main ---------- */
+        .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+        .topbar {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 26px; border-bottom: 1px solid var(--line);
+            background: color-mix(in srgb, var(--surface) 70%, transparent);
+            backdrop-filter: blur(8px);
+        }
+        .search {
+            flex: 1; max-width: 420px; display: flex; align-items: center; gap: 8px;
+            background: var(--surface-2); border: 1px solid var(--line);
+            border-radius: 10px; padding: 8px 12px; color: var(--ink-faint);
+        }
+        .search input { border: none; background: none; outline: none; color: var(--ink); width: 100%; font-size: 14px; }
+        .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+        .content { flex: 1; overflow-y: auto; padding: 28px; min-height: 0; }
+        .content-inner { max-width: 1080px; margin: 0 auto; }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            border: 1px solid var(--line-strong); background: var(--surface);
+            color: var(--ink); padding: 8px 14px; border-radius: 10px;
+            font-weight: 600; font-size: 13.5px; transition: .14s; white-space: nowrap;
+        }
+        .btn:hover { border-color: var(--ink-faint); transform: translateY(-1px); box-shadow: var(--shadow-1); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+        .btn-ghost { border-color: transparent; background: transparent; color: var(--ink-soft); }
+        .btn-ghost:hover { background: var(--surface-2); color: var(--ink); box-shadow: none; }
+        .btn-icon { padding: 8px; }
+        .btn-sm { padding: 6px 10px; font-size: 12.5px; }
+        .btn-danger { color: var(--red); border-color: transparent; }
+        .btn-danger:hover { background: var(--red-soft); border-color: transparent; }
+
+        /* ---------- Page headers ---------- */
+        .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+        .page-title { font-family: var(--display); font-size: 30px; font-weight: 700; letter-spacing: -.025em; margin: 0; }
+        .page-sub { color: var(--ink-soft); margin: 4px 0 0; font-size: 14px; }
+        .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+
+        /* ---------- Stat strip ---------- */
+        .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 26px; }
+        .stat {
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+            padding: 16px 18px; box-shadow: var(--shadow-1);
+        }
+        .stat .num { font-family: var(--display); font-size: 27px; font-weight: 700; letter-spacing: -.02em; }
+        .stat .lbl { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+        .stat.accent .num { color: var(--accent); }
+        .stat.amber .num { color: var(--amber); }
+        .stat.green .num { color: var(--green); }
+
+        /* ---------- Deck grid ---------- */
+        .deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .deck-card {
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+            padding: 18px; box-shadow: var(--shadow-1); transition: .16s; cursor: pointer;
+            display: flex; flex-direction: column; gap: 12px; position: relative;
+        }
+        .deck-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--line-strong); }
+        .deck-card-top { display: flex; align-items: flex-start; gap: 12px; }
+        .deck-card h3 { font-family: var(--display); font-size: 17px; margin: 0 0 2px; letter-spacing: -.01em; }
+        .deck-card .desc { font-size: 13px; color: var(--ink-soft); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .chip {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+            padding: 3px 9px; border-radius: 20px; background: var(--surface-2); color: var(--ink-soft);
+        }
+        .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .deck-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+        .deck-meta { display: flex; gap: 14px; font-size: 12.5px; color: var(--ink-faint); font-family: var(--mono); }
+        .deck-meta b { color: var(--ink-soft); font-weight: 600; }
+        .due-badge { color: var(--amber); }
+
+        .ring { --p: 0; width: 46px; height: 46px; flex: none; }
+        .ring text { font-family: var(--mono); font-weight: 600; fill: var(--ink-soft); }
+
+        /* ---------- Deck detail ---------- */
+        .card-row {
+            display: flex; align-items: center; gap: 14px;
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
+            padding: 13px 16px; margin-bottom: 9px; box-shadow: var(--shadow-1);
+        }
+        .card-row:hover { border-color: var(--line-strong); }
+        .type-tag {
+            font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .04em;
+            padding: 3px 7px; border-radius: 6px; text-transform: uppercase; flex: none;
+        }
+        .type-tag.basic { background: var(--accent-soft); color: var(--accent-ink); }
+        .type-tag.fill { background: var(--amber-soft); color: var(--amber); }
+        .card-row .preview { flex: 1; min-width: 0; }
+        .card-row .preview .q { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .card-row .preview .a { font-size: 13px; color: var(--ink-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .card-row .preview .blank-mini { color: var(--amber); font-weight: 600; border-bottom: 2px solid var(--amber); padding: 0 2px; }
+        .row-actions { display: flex; gap: 4px; opacity: .55; }
+        .card-row:hover .row-actions { opacity: 1; }
+
+        /* ---------- Empty states ---------- */
+        .empty {
+            text-align: center; padding: 60px 20px; color: var(--ink-soft);
+            border: 1.5px dashed var(--line-strong); border-radius: var(--radius); background: var(--surface);
+        }
+        .empty .big { font-family: var(--display); font-size: 19px; color: var(--ink); margin-bottom: 6px; }
+
+        /* ---------- Modal ---------- */
+        .modal-root { position: fixed; inset: 0; z-index: 60; display: none; }
+        .modal-root.open { display: block; }
+        .modal-backdrop { position: absolute; inset: 0; background: rgba(15,17,25,.5); backdrop-filter: blur(3px); animation: fade .18s; }
+        .modal {
+            position: relative; max-width: 620px; margin: 6vh auto; background: var(--surface);
+            border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-2);
+            max-height: 88vh; display: flex; flex-direction: column; animation: pop .2s;
+        }
+        .modal-head { padding: 20px 24px 0; }
+        .modal-head h2 { font-family: var(--display); font-size: 20px; margin: 0; letter-spacing: -.01em; }
+        .modal-head p { color: var(--ink-soft); font-size: 13.5px; margin: 4px 0 0; }
+        .modal-body { padding: 18px 24px; overflow-y: auto; }
+        .modal-foot { padding: 14px 24px 20px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--line); }
+        @keyframes fade { from { opacity: 0; } }
+        @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }
+        .input, .select {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--line-strong);
+            border-radius: 10px; background: var(--surface-2); color: var(--ink); font-size: 14px; outline: none;
+        }
+        .input:focus, .select:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+        /* type toggle */
+        .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 3px; }
+        .seg button { border: none; background: none; color: var(--ink-soft); font-weight: 600; font-size: 13px; padding: 7px 14px; border-radius: 7px; }
+        .seg button.on { background: var(--surface); color: var(--accent-ink); box-shadow: var(--shadow-1); }
+
+        /* ---------- Rich editor ---------- */
+        .rte { border: 1px solid var(--line-strong); border-radius: 10px; overflow: hidden; background: var(--surface-2); }
+        .rte:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .rte-bar { display: flex; gap: 2px; padding: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; background: var(--surface); }
+        .rte-bar button {
+            border: none; background: none; color: var(--ink-soft); width: 30px; height: 30px;
+            border-radius: 7px; font-size: 14px; display: grid; place-items: center;
+        }
+        .rte-bar button:hover { background: var(--surface-2); color: var(--ink); }
+        .rte-bar button.wide { width: auto; padding: 0 10px; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--amber); }
+        .rte-bar .sep { width: 1px; background: var(--line); margin: 4px 3px; }
+        .rte-area { min-height: 96px; max-height: 240px; overflow-y: auto; padding: 12px 14px; outline: none; font-size: 15px; background: var(--surface); }
+        .rte-area:empty::before { content: attr(data-placeholder); color: var(--ink-faint); }
+        .rte-area b, .rte-area strong { font-weight: 700; }
+        .rte-area ul, .rte-area ol { margin: 6px 0; padding-left: 22px; }
+
+        .blank {
+            background: var(--amber-soft); color: var(--amber); font-weight: 600;
+            padding: 1px 7px; border-radius: 6px; border-bottom: 2px solid var(--amber); cursor: pointer; white-space: nowrap;
+        }
+        .blank:hover { filter: brightness(.96); text-decoration: line-through; }
+        .hint { font-size: 12px; color: var(--ink-faint); margin-top: 7px; line-height: 1.45; }
+        .hint code { font-family: var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 5px; font-size: 11.5px; }
+
+        /* color swatches */
+        .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+        .swatch { width: 26px; height: 26px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; }
+        .swatch.on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); }
+
+        /* subjects manager rows */
+        .subj-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+        .subj-row:last-child { border-bottom: none; }
+        .subj-row input { flex: 1; }
+
+        /* ---------- Study mode ---------- */
+        .study {
+            position: fixed; inset: 0; z-index: 50; display: none;
+            flex-direction: column; background: var(--bg);
+        }
+        .study.open { display: flex; }
+        [data-theme="light"] .study { background: radial-gradient(120% 80% at 50% -10%, #ece9fc 0%, #f3f4f7 55%); }
+        [data-theme="dark"] .study { background: radial-gradient(120% 80% at 50% -10%, #221f3d 0%, #14161c 55%); }
+        .study-top { display: flex; align-items: center; gap: 16px; padding: 16px 24px; }
+        .study-top .title { font-family: var(--display); font-weight: 600; }
+        .study-top .scope { font-size: 12.5px; color: var(--ink-soft); }
+        .progress-track { flex: 1; height: 6px; background: var(--line); border-radius: 4px; overflow: hidden; max-width: 460px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #8a7cff); width: 0%; transition: width .3s; }
+        .study-count { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+
+        .study-stage { flex: 1; display: grid; place-items: center; padding: 10px 20px 24px; position: relative; }
+        .card-wrap { width: min(680px, 92vw); position: relative; }
+        .stack-layer { position: absolute; inset: 0; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); }
+        .stack-layer.l1 { transform: translateY(14px) scale(.96); opacity: .6; }
+        .stack-layer.l2 { transform: translateY(26px) scale(.92); opacity: .35; }
+
+        .flashcard { position: relative; perspective: 1800px; min-height: 340px; }
+        .flashcard-inner { position: relative; width: 100%; min-height: 340px; transition: transform .55s cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .face {
+            position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+            box-shadow: var(--shadow-card); padding: 40px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .face.back { transform: rotateY(180deg); }
+        .face-label { position: absolute; top: 18px; left: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+        .face-content { font-family: var(--display); font-size: clamp(20px, 3.4vw, 30px); line-height: 1.35; font-weight: 500; max-height: 240px; overflow-y: auto; }
+        .face-content.small { font-size: clamp(18px, 2.6vw, 23px); }
+        .face-content ul, .face-content ol { text-align: left; display: inline-block; }
+        .tap-hint { position: absolute; bottom: 18px; font-size: 12px; color: var(--ink-faint); font-family: var(--mono); }
+
+        /* fill card (no flip) */
+        .fill-card {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-card);
+            padding: 44px 40px; min-height: 340px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .fill-prompt { font-family: var(--display); font-size: clamp(19px, 2.8vw, 26px); line-height: 1.7; font-weight: 500; text-align: center; }
+        .fill-input {
+            font-family: var(--display); font-size: inherit; font-weight: 600; text-align: center;
+            border: none; border-bottom: 2px solid var(--accent); background: var(--accent-soft);
+            color: var(--accent-ink); border-radius: 6px 6px 0 0; padding: 1px 8px; margin: 0 3px;
+            min-width: 90px; outline: none;
+        }
+        .fill-input:focus { box-shadow: 0 2px 0 var(--accent); }
+        .fill-input.correct { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+        .fill-input.incorrect { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+        .answer-key { text-align: center; margin-top: 22px; font-size: 14px; color: var(--ink-soft); }
+        .answer-key .ok { color: var(--green); font-weight: 600; }
+        .answer-key b { color: var(--green); font-family: var(--mono); }
+
+        .study-controls { padding: 18px 20px 30px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .rate-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .rate {
+            display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 92px;
+            border: 1px solid var(--line-strong); background: var(--surface); border-radius: 12px;
+            padding: 10px 16px; font-weight: 600; color: var(--ink); transition: .14s;
+        }
+        .rate:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); }
+        .rate small { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); font-weight: 500; }
+        .rate.again:hover { border-color: var(--red); color: var(--red); }
+        .rate.hard:hover { border-color: var(--amber); }
+        .rate.good:hover { border-color: var(--accent); color: var(--accent-ink); }
+        .rate.easy:hover { border-color: var(--green); color: var(--green); }
+        .big-action { display: flex; gap: 12px; }
+
+        .session-done { text-align: center; }
+        .session-done .big { font-family: var(--display); font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+        .session-done .em { font-size: 46px; }
+
+        /* ---------- Toast ---------- */
+        .toast-wrap { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 90; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .toast {
+            background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 10px;
+            font-size: 13.5px; font-weight: 500; box-shadow: var(--shadow-2); animation: toastin .25s;
+        }
+        @keyframes toastin { from { opacity: 0; transform: translateY(8px); } }
+
+        .session-banner {
+            background: var(--amber-soft); color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent);
+            border-radius: 10px; padding: 9px 14px; font-size: 12.5px; font-weight: 500; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        @media (max-width: 860px) {
+            .app { grid-template-columns: 1fr; }
+            .sidebar { position: fixed; inset: 0 auto 0 0; width: 264px; z-index: 40; transform: translateX(-100%); transition: .22s; box-shadow: var(--shadow-2); }
+            .sidebar.open { transform: none; }
+            .menu-btn { display: inline-flex !important; }
+            .stat-strip { grid-template-columns: repeat(2, 1fr); }
+            .content { padding: 18px; }
+        }
+        .menu-btn { display: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark">R</div>
+            <div>
+                <div class="brand-name">Recall</div>
+                <div class="brand-sub">study smarter</div>
+            </div>
+        </div>
+        <nav class="nav" id="nav"><!-- built by JS --></nav>
+        <div class="sidebar-foot">
+            <button class="btn btn-sm" id="importBtn" title="Import from file">Import</button>
+            <button class="btn btn-sm" id="exportBtn" title="Save to file">Export</button>
+            <button class="btn btn-sm btn-icon" id="themeBtn" title="Toggle theme" style="margin-left:auto">◐</button>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+        <header class="topbar">
+            <button class="btn btn-icon btn-ghost menu-btn" id="menuBtn">☰</button>
+            <div class="search">
+                <span>⌕</span>
+                <input id="searchInput" type="text" placeholder="Search cards and decks…" />
+            </div>
+            <div class="topbar-actions">
+                <button class="btn" id="studyDueBtn">Study due</button>
+                <button class="btn btn-primary" id="newDeckBtn">＋ New deck</button>
+            </div>
+        </header>
+        <div class="content"><div class="content-inner" id="view"></div></div>
+    </div>
+</div>
+
+<!-- Study overlay -->
+<div class="study" id="study">
+    <div class="study-top">
+        <button class="btn btn-ghost btn-sm" id="studyExit">✕ End</button>
+        <div>
+            <div class="title" id="studyTitle">Studying</div>
+            <div class="scope" id="studyScope"></div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="studyProgress"></div></div>
+        <div class="study-count" id="studyCount">0 / 0</div>
+    </div>
+    <div class="study-stage" id="studyStage"></div>
+    <div class="study-controls" id="studyControls"></div>
+</div>
+
+<!-- Modal root -->
+<div class="modal-root" id="modalRoot">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal" id="modal"></div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<input type="file" id="fileInput" accept="application/json" style="display:none" />
+
+<script>
+  "use strict";
+
+  /* =========================================================================
+     Recall — flashcards. Vanilla JS, single file.
+     State is in-memory for the session; use Export / Import to persist.
+     ========================================================================= */
+
+  const SUBJECT_COLORS = ["#5b53d6","#2f9e72","#d6555b","#e08a2b","#2b8ad6","#9b51e0","#e05299","#0f9b96"];
+  const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-3);
+  const DAY = 86400000;
+
+  /* ----- State ----- */
+  let state = { subjects: [], decks: [] };
+  const ui = { view: "dashboard", deckId: null, subjectId: null, search: "" };
+
+  /* ----- Seed sample data so the app is explorable immediately ----- */
+  function seed() {
+    const sp = { id: uid(), name: "Spanish", color: SUBJECT_COLORS[0] };
+    const bio = { id: uid(), name: "Biology", color: SUBJECT_COLORS[1] };
+    state.subjects = [sp, bio];
+    const newSrs = () => ({ due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 });
+    state.decks = [
+      {
+        id: uid(), name: "Travel basics", subjectId: sp.id,
+        description: "Everyday words and phrases for getting around.", createdAt: Date.now(),
+        cards: [
+          { id: uid(), type: "basic", front: "the airport", back: "<b>el aeropuerto</b>", srs: newSrs() },
+          { id: uid(), type: "basic", front: "Where is the station?", back: "¿Dónde está <b>la estación</b>?", srs: newSrs() },
+          { id: uid(), type: "fill", prompt: 'Quiero comprar un <span class="blank" data-answer="billete|boleto">billete</span> de tren.', srs: newSrs() },
+        ],
+      },
+      {
+        id: uid(), name: "Cell biology", subjectId: bio.id,
+        description: "Organelles and the basics of the cell.", createdAt: Date.now(),
+        cards: [
+          { id: uid(), type: "basic", front: "Powerhouse of the cell", back: "The <b>mitochondrion</b>", srs: newSrs() },
+          { id: uid(), type: "fill", prompt: 'The <span class="blank" data-answer="nucleus">nucleus</span> holds the cell\'s genetic material.', srs: newSrs() },
+        ],
+      },
+    ];
+  }
+  /* ----- Persistence: auto-save to localStorage when it's available, with a
+     silent in-memory fallback for sandboxes (like the artifact viewer) where
+     browser storage is blocked. Nothing changes for the user except that a
+     downloaded, standalone copy now remembers everything between runs. ----- */
+  const STORAGE_KEY = "recall.flashcards.v1";
+  function storageAvailable() {
+    try { const k = "__recall_test__"; window.localStorage.setItem(k, "1"); window.localStorage.removeItem(k); return true; }
+    catch (e) { return false; }
+  }
+  let storageOK = storageAvailable();
+  function persist() {
+    if (!storageOK) return;
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, subjects: state.subjects, decks: state.decks })); }
+    catch (e) { storageOK = false; } // e.g. quota exceeded — degrade gracefully
+  }
+  function loadPersisted() {
+    if (!storageOK) return null;
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || !Array.isArray(data.decks)) return null;
+      data.decks.forEach(d => (d.cards || []).forEach(c => { if (!c.srs) c.srs = { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 }; }));
+      return { subjects: Array.isArray(data.subjects) ? data.subjects : [], decks: data.decks };
+    } catch (e) { return null; }
+  }
+
+  /* On startup, restore saved data if there is any; otherwise seed the samples. */
+  const _persisted = loadPersisted();
+  if (_persisted) state = _persisted;
+  else { seed(); persist(); }
+
+  /* ----- Small helpers ----- */
+  const $ = (s, r = document) => r.querySelector(s);
+  const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
+  const escapeAttr = s => String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+
+  function sanitize(html) {
+    const t = document.createElement("template");
+    t.innerHTML = html || "";
+    t.content.querySelectorAll("script,style,iframe,object,embed,link,meta").forEach(n => n.remove());
+    t.content.querySelectorAll("*").forEach(node => {
+      [...node.attributes].forEach(a => {
+        const n = a.name.toLowerCase();
+        if (n.startsWith("on")) node.removeAttribute(a.name);
+        if ((n === "href" || n === "src") && /^\s*javascript:/i.test(a.value)) node.removeAttribute(a.name);
+      });
+    });
+    return t.content.firstChild ? t.innerHTML : "";
+  }
+  function plainText(html) { const d = el("div", null, html || ""); return (d.textContent || "").trim(); }
+  function fillPreview(html) {
+    return (html || "").replace(/<span class="blank"[^>]*>.*?<\/span>/g, '<span class="blank-mini">____</span>');
+  }
+
+  function subjectById(id) { return state.subjects.find(s => s.id === id); }
+  function deckById(id) { return state.decks.find(d => d.id === id); }
+  function decksInSubject(id) { return state.decks.filter(d => (id === "__uncat" ? !subjectById(d.subjectId) : d.subjectId === id)); }
+  function isDue(card) { return (card.srs?.due ?? 0) <= Date.now(); }
+  function isMastered(card) { return (card.srs?.reps ?? 0) > 0 && (card.srs?.interval ?? 0) >= 4; }
+  function deckStats(deck) {
+    const total = deck.cards.length;
+    const due = deck.cards.filter(isDue).length;
+    const mastered = deck.cards.filter(isMastered).length;
+    return { total, due, mastered, pct: total ? Math.round((mastered / total) * 100) : 0 };
+  }
+
+  /* ----- Toast ----- */
+  function toast(msg) {
+    const t = el("div", "toast", msg);
+    $("#toastWrap").appendChild(t);
+    setTimeout(() => { t.style.opacity = "0"; t.style.transition = "opacity .3s"; setTimeout(() => t.remove(), 300); }, 1900);
+  }
+
+  /* =========================================================================
+     Rendering
+     ========================================================================= */
+  function render() {
+    renderSidebar();
+    if (ui.view === "deck" && deckById(ui.deckId)) renderDeck();
+    else if (ui.view === "subject") renderSubjectView();
+    else renderDashboard();
+  }
+
+  function renderSidebar() {
+    const nav = $("#nav");
+    nav.innerHTML = "";
+    const allActive = ui.view === "dashboard" ? "active" : "";
+    const allItem = el("button", `nav-item ${allActive}`, `<span>▦</span><span>All decks</span><span class="count">${state.decks.length}</span>`);
+    allItem.onclick = () => { ui.view = "dashboard"; ui.deckId = null; ui.subjectId = null; render(); closeSidebar(); };
+    nav.appendChild(allItem);
+
+    const label = el("div", "nav-section-label", `<span>Subjects</span>`);
+    const addSubj = el("button", null, "＋"); addSubj.title = "Manage subjects"; addSubj.onclick = openSubjectsManager;
+    label.appendChild(addSubj);
+    nav.appendChild(label);
+
+    const groups = state.subjects.map(s => ({ s, decks: decksInSubject(s.id) }));
+    const uncat = decksInSubject("__uncat");
+    if (uncat.length) groups.push({ s: { id: "__uncat", name: "Uncategorized", color: "#9aa0ad" }, decks: uncat });
+
+    groups.forEach(({ s, decks }) => {
+      const active = ui.view === "subject" && ui.subjectId === s.id ? "active" : "";
+      const item = el("button", `nav-item ${active}`,
+        `<span class="dot" style="background:${s.color}"></span><span>${escapeAttr(s.name)}</span><span class="count">${decks.length}</span>`);
+      item.onclick = () => { ui.view = "subject"; ui.subjectId = s.id; ui.deckId = null; render(); closeSidebar(); };
+      nav.appendChild(item);
+      decks.forEach(d => {
+        const da = ui.view === "deck" && ui.deckId === d.id ? "active" : "";
+        const di = el("button", `nav-item nav-deck ${da}`, `<span>${escapeAttr(d.name)}</span><span class="count">${d.cards.length}</span>`);
+        di.onclick = () => { ui.view = "deck"; ui.deckId = d.id; render(); closeSidebar(); };
+        nav.appendChild(di);
+      });
+    });
+
+    if (!state.subjects.length && !state.decks.length) {
+      nav.appendChild(el("div", "hint", "<div style='padding:10px'>No decks yet. Create one to begin.</div>"));
+    }
+    persist(); // renderSidebar runs on every structural change, so this auto-saves
+  }
+
+  function ringSVG(pct) {
+    const r = 18, c = 2 * Math.PI * r, off = c * (1 - pct / 100);
+    return `<svg class="ring" viewBox="0 0 46 46">
+    <circle cx="23" cy="23" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"/>
+    <circle cx="23" cy="23" r="${r}" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 23 23)"/>
+    <text x="23" y="27" text-anchor="middle" font-size="11">${pct}%</text></svg>`;
+  }
+
+  function matchesSearch(deck) {
+    const q = ui.search.trim().toLowerCase();
+    if (!q) return true;
+    if (deck.name.toLowerCase().includes(q) || (deck.description || "").toLowerCase().includes(q)) return true;
+    return deck.cards.some(c => {
+      const text = c.type === "basic" ? plainText(c.front) + " " + plainText(c.back) : plainText(c.prompt);
+      return text.toLowerCase().includes(q);
+    });
+  }
+
+  function deckCardEl(deck) {
+    const st = deckStats(deck);
+    const subj = subjectById(deck.subjectId);
+    const node = el("div", "deck-card");
+    node.innerHTML = `
+    <div class="deck-card-top">
+      <div style="flex:1;min-width:0">
+        <h3>${escapeAttr(deck.name)}</h3>
+        <span class="chip"><span class="dot" style="background:${subj ? subj.color : "#9aa0ad"}"></span>${escapeAttr(subj ? subj.name : "Uncategorized")}</span>
+      </div>
+      ${ringSVG(st.pct)}
+    </div>
+    <p class="desc">${escapeAttr(deck.description || "No description.")}</p>
+    <div class="deck-card-foot">
+      <div class="deck-meta">
+        <span><b>${st.total}</b> cards</span>
+        ${st.due ? `<span class="due-badge"><b>${st.due}</b> due</span>` : `<span>all reviewed</span>`}
+      </div>
+      <button class="btn btn-primary btn-sm" data-study>Study</button>
+    </div>`;
+    node.onclick = () => { ui.view = "deck"; ui.deckId = deck.id; render(); };
+    node.querySelector("[data-study]").onclick = (e) => { e.stopPropagation(); startStudy({ type: "deck", id: deck.id }, "due"); };
+    return node;
+  }
+
+  function renderDashboard() {
+    const v = $("#view");
+    v.innerHTML = "";
+    const totalCards = state.decks.reduce((n, d) => n + d.cards.length, 0);
+    const dueCards = state.decks.reduce((n, d) => n + d.cards.filter(isDue).length, 0);
+    const masteredCards = state.decks.reduce((n, d) => n + d.cards.filter(isMastered).length, 0);
+
+    v.appendChild(el("div", "page-head",
+      `<div><div class="eyebrow">Dashboard</div><h1 class="page-title">All decks</h1>
+      <p class="page-sub">${state.decks.length} deck${state.decks.length === 1 ? "" : "s"} across ${state.subjects.length} subject${state.subjects.length === 1 ? "" : "s"}.</p></div>`));
+
+    v.appendChild(el("div", "session-banner",
+      storageOK
+        ? `<span>●</span><span>Saved automatically in this browser. Use <b>Export</b> for a backup you can move between devices.</span>`
+        : `<span>●</span><span>Your data lives in this session only. Use <b>Export</b> to save a copy and <b>Import</b> to restore it.</span>`));
+
+    const strip = el("div", "stat-strip");
+    strip.innerHTML = `
+    <div class="stat"><div class="num">${state.decks.length}</div><div class="lbl">Decks</div></div>
+    <div class="stat accent"><div class="num">${totalCards}</div><div class="lbl">Total cards</div></div>
+    <div class="stat amber"><div class="num">${dueCards}</div><div class="lbl">Due now</div></div>
+    <div class="stat green"><div class="num">${masteredCards}</div><div class="lbl">Mastered</div></div>`;
+    v.appendChild(strip);
+
+    const decks = state.decks.filter(matchesSearch);
+    if (!decks.length) {
+      v.appendChild(el("div", "empty",
+        `<div class="big">${state.decks.length ? "No decks match your search" : "Start your first deck"}</div>
+       <p>${state.decks.length ? "Try a different term." : "Create a deck, add cards, then study."}</p>
+       <div style="margin-top:14px"><button class="btn btn-primary" onclick="openDeckEditor()">＋ New deck</button></div>`));
+      return;
+    }
+    const grid = el("div", "deck-grid");
+    decks.forEach(d => grid.appendChild(deckCardEl(d)));
+    v.appendChild(grid);
+  }
+
+  function renderSubjectView() {
+    const subj = ui.subjectId === "__uncat" ? { id: "__uncat", name: "Uncategorized", color: "#9aa0ad" } : subjectById(ui.subjectId);
+    if (!subj) { ui.view = "dashboard"; return renderDashboard(); }
+    const decks = decksInSubject(subj.id).filter(matchesSearch);
+    const v = $("#view");
+    v.innerHTML = "";
+    const head = el("div", "page-head");
+    head.innerHTML = `<div>
+      <div class="eyebrow"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${subj.color};margin-right:6px"></span>Subject</div>
+      <h1 class="page-title">${escapeAttr(subj.name)}</h1>
+      <p class="page-sub">${decks.length} deck${decks.length === 1 ? "" : "s"}.</p></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="subjStudy">Study subject</button>
+      <button class="btn btn-primary" onclick="openDeckEditor(null, '${subj.id === "__uncat" ? "" : subj.id}')">＋ New deck</button>
+    </div>`;
+    v.appendChild(head);
+    $("#subjStudy").onclick = () => startStudy({ type: "subject", id: subj.id }, "due");
+
+    if (!decks.length) {
+      v.appendChild(el("div", "empty", `<div class="big">No decks here yet</div><p>Add a deck to this subject to get going.</p>`));
+      return;
+    }
+    const grid = el("div", "deck-grid");
+    decks.forEach(d => grid.appendChild(deckCardEl(d)));
+    v.appendChild(grid);
+  }
+
+  function renderDeck() {
+    const deck = deckById(ui.deckId);
+    const subj = subjectById(deck.subjectId);
+    const st = deckStats(deck);
+    const v = $("#view");
+    v.innerHTML = "";
+
+    const head = el("div", "page-head");
+    head.innerHTML = `
+    <div>
+      <div class="eyebrow"><span style="cursor:pointer" id="bcAll">All decks</span> ›
+        <span style="cursor:pointer" id="bcSubj">${escapeAttr(subj ? subj.name : "Uncategorized")}</span></div>
+      <h1 class="page-title">${escapeAttr(deck.name)}</h1>
+      <p class="page-sub">${escapeAttr(deck.description || "No description.")}</p>
+      <div class="deck-meta" style="margin-top:10px">
+        <span><b>${st.total}</b> cards</span><span><b>${st.due}</b> due</span><span><b>${st.mastered}</b> mastered</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-icon" id="editDeck" title="Edit deck">✎</button>
+      <button class="btn btn-ghost btn-icon btn-danger" id="delDeck" title="Delete deck">🗑</button>
+      <button class="btn" id="cramBtn">Cram all</button>
+      <button class="btn btn-primary" id="studyDeckBtn">Study due (${st.due})</button>
+    </div>`;
+    v.appendChild(head);
+    $("#bcAll").onclick = () => { ui.view = "dashboard"; render(); };
+    $("#bcSubj").onclick = () => { if (subj) { ui.view = "subject"; ui.subjectId = subj.id; render(); } };
+    $("#editDeck").onclick = () => openDeckEditor(deck.id);
+    $("#delDeck").onclick = () => confirmModal("Delete deck?", `"${deck.name}" and its ${deck.cards.length} card(s) will be removed.`, () => {
+      state.decks = state.decks.filter(d => d.id !== deck.id); ui.view = "dashboard"; render(); toast("Deck deleted");
+    });
+    $("#cramBtn").onclick = () => startStudy({ type: "deck", id: deck.id }, "cram");
+    $("#studyDeckBtn").onclick = () => startStudy({ type: "deck", id: deck.id }, "due");
+
+    const addBar = el("div", null);
+    addBar.style.cssText = "display:flex;gap:8px;margin-bottom:16px";
+    addBar.innerHTML = `<button class="btn btn-primary btn-sm" id="addBasic">＋ Basic card</button>
+                      <button class="btn btn-sm" id="addFill">＋ Fill-in-the-blank</button>`;
+    v.appendChild(addBar);
+    $("#addBasic").onclick = () => openCardEditor(deck.id, null, "basic");
+    $("#addFill").onclick = () => openCardEditor(deck.id, null, "fill");
+
+    const q = ui.search.trim().toLowerCase();
+    const cards = deck.cards.filter(c => {
+      if (!q) return true;
+      const text = c.type === "basic" ? plainText(c.front) + " " + plainText(c.back) : plainText(c.prompt);
+      return text.toLowerCase().includes(q);
+    });
+
+    if (!cards.length) {
+      v.appendChild(el("div", "empty", `<div class="big">${deck.cards.length ? "No matching cards" : "This deck is empty"}</div><p>${deck.cards.length ? "Try another search." : "Add a basic or fill-in-the-blank card above."}</p>`));
+      return;
+    }
+
+    const list = el("div", null);
+    cards.forEach(card => {
+      const row = el("div", "card-row");
+      let preview;
+      if (card.type === "basic") {
+        preview = `<div class="q">${sanitize(card.front)}</div><div class="a">${plainText(card.back)}</div>`;
+      } else {
+        preview = `<div class="q">${fillPreview(card.prompt)}</div><div class="a">fill-in-the-blank</div>`;
+      }
+      row.innerHTML = `
+      <span class="type-tag ${card.type}">${card.type === "basic" ? "Basic" : "Fill"}</span>
+      <div class="preview">${preview}</div>
+      <div class="row-actions">
+        <button class="btn btn-ghost btn-icon btn-sm" data-edit title="Edit">✎</button>
+        <button class="btn btn-ghost btn-icon btn-sm btn-danger" data-del title="Delete">🗑</button>
+      </div>`;
+      row.querySelector("[data-edit]").onclick = () => openCardEditor(deck.id, card.id);
+      row.querySelector("[data-del]").onclick = () => {
+        deck.cards = deck.cards.filter(c => c.id !== card.id); render(); toast("Card deleted");
+      };
+      list.appendChild(row);
+    });
+    v.appendChild(list);
+  }
+
+  /* =========================================================================
+     Modals
+     ========================================================================= */
+  function openModal(node) {
+    const m = $("#modal"); m.innerHTML = ""; m.appendChild(node);
+    $("#modalRoot").classList.add("open");
+  }
+  function closeModal() { $("#modalRoot").classList.remove("open"); }
+  $("#modalRoot").addEventListener("click", e => { if (e.target.hasAttribute("data-close")) closeModal(); });
+
+  function confirmModal(title, body, onYes) {
+    const n = el("div");
+    n.innerHTML = `<div class="modal-head"><h2>${escapeAttr(title)}</h2><p>${escapeAttr(body)}</p></div>
+    <div class="modal-foot"><button class="btn" data-no>Cancel</button><button class="btn btn-primary" data-yes style="background:var(--red);border-color:var(--red)">Delete</button></div>`;
+    n.querySelector("[data-no]").onclick = closeModal;
+    n.querySelector("[data-yes]").onclick = () => { closeModal(); onYes(); };
+    openModal(n);
+  }
+
+  /* ----- Deck editor ----- */
+  function openDeckEditor(deckId, presetSubjectId) {
+    const editing = deckId ? deckById(deckId) : null;
+    const n = el("div");
+    const opts = state.subjects.map(s => `<option value="${s.id}" ${editing ? (editing.subjectId === s.id ? "selected" : "") : (presetSubjectId === s.id ? "selected" : "")}>${escapeAttr(s.name)}</option>`).join("");
+    n.innerHTML = `
+    <div class="modal-head"><h2>${editing ? "Edit deck" : "New deck"}</h2><p>Decks group related cards. Assign a subject to keep things tidy.</p></div>
+    <div class="modal-body">
+      <div class="field"><label>Deck name</label><input class="input" id="dName" placeholder="e.g. Irregular verbs" value="${editing ? escapeAttr(editing.name) : ""}"/></div>
+      <div class="field"><label>Subject</label>
+        <div style="display:flex;gap:8px">
+          <select class="select" id="dSubj"><option value="">Uncategorized</option>${opts}</select>
+          <button class="btn btn-sm" id="dNewSubj">＋ New</button>
+        </div>
+      </div>
+      <div class="field"><label>Description <span style="color:var(--ink-faint);font-weight:400">(optional)</span></label>
+        <textarea class="input" id="dDesc" rows="2" placeholder="What's in this deck?">${editing ? escapeAttr(editing.description || "") : ""}</textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close>Cancel</button><button class="btn btn-primary" id="dSave">${editing ? "Save changes" : "Create deck"}</button></div>`;
+    openModal(n);
+    $("#dName").focus();
+    $("#dNewSubj").onclick = () => openSubjectsManager(() => {
+      const sel = $("#dSubj");
+      sel.innerHTML = `<option value="">Uncategorized</option>` + state.subjects.map(s => `<option value="${s.id}">${escapeAttr(s.name)}</option>`).join("");
+      if (state.subjects.length) sel.value = state.subjects[state.subjects.length - 1].id;
+    });
+    $("#dSave").onclick = () => {
+      const name = $("#dName").value.trim();
+      if (!name) { toast("Give the deck a name"); return; }
+      const subjectId = $("#dSubj").value || null;
+      const description = $("#dDesc").value.trim();
+      if (editing) { Object.assign(editing, { name, subjectId, description }); toast("Deck updated"); }
+      else {
+        const d = { id: uid(), name, subjectId, description, createdAt: Date.now(), cards: [] };
+        state.decks.push(d); ui.view = "deck"; ui.deckId = d.id; toast("Deck created");
+      }
+      closeModal(); render();
+    };
+  }
+
+  /* ----- Subjects manager ----- */
+  function openSubjectsManager(onChange) {
+    const n = el("div");
+    n.innerHTML = `<div class="modal-head"><h2>Subjects</h2><p>Categories for your decks. Rename, recolor, or remove.</p></div>
+    <div class="modal-body" id="subjBody"></div>
+    <div class="modal-foot"><button class="btn" data-close>Done</button></div>`;
+    openModal(n);
+    const body = n.querySelector("#subjBody");
+
+    function draw() {
+      body.innerHTML = "";
+      state.subjects.forEach(s => {
+        const row = el("div", "subj-row");
+        const swatches = SUBJECT_COLORS.map(c => `<span class="swatch ${c === s.color ? "on" : ""}" data-color="${c}" style="background:${c}"></span>`).join("");
+        row.innerHTML = `<input class="input" value="${escapeAttr(s.name)}" data-name/>
+        <div class="swatches" style="gap:5px">${swatches}</div>
+        <button class="btn btn-ghost btn-icon btn-sm btn-danger" data-del title="Delete">🗑</button>`;
+        row.querySelector("[data-name]").onchange = e => { s.name = e.target.value.trim() || s.name; onChange && onChange(); renderSidebar(); };
+        row.querySelectorAll(".swatch").forEach(sw => sw.onclick = () => { s.color = sw.dataset.color; draw(); onChange && onChange(); renderSidebar(); });
+        row.querySelector("[data-del]").onclick = () => {
+          state.decks.forEach(d => { if (d.subjectId === s.id) d.subjectId = null; });
+          state.subjects = state.subjects.filter(x => x.id !== s.id);
+          draw(); onChange && onChange(); render();
+        };
+        body.appendChild(row);
+      });
+      const add = el("div");
+      add.style.cssText = "display:flex;gap:8px;margin-top:14px";
+      add.innerHTML = `<input class="input" id="newSubjName" placeholder="New subject name"/><button class="btn btn-primary" id="addSubjBtn">Add</button>`;
+      body.appendChild(add);
+      add.querySelector("#addSubjBtn").onclick = () => {
+        const name = add.querySelector("#newSubjName").value.trim();
+        if (!name) return;
+        const color = SUBJECT_COLORS[state.subjects.length % SUBJECT_COLORS.length];
+        state.subjects.push({ id: uid(), name, color });
+        draw(); onChange && onChange(); renderSidebar();
+      };
+      add.querySelector("#newSubjName").addEventListener("keydown", e => { if (e.key === "Enter") add.querySelector("#addSubjBtn").click(); });
+    }
+    draw();
+  }
+
+  /* ----- Rich text editor ----- */
+  function buildRTE(initialHTML, placeholder, withBlank) {
+    const wrap = el("div", "rte");
+    const bar = el("div", "rte-bar");
+    const cmds = [
+      ["bold", "<b>B</b>", "Bold"], ["italic", "<i>I</i>", "Italic"],
+      ["underline", "<u>U</u>", "Underline"], ["strikeThrough", "<s>S</s>", "Strikethrough"],
+      ["sep"], ["insertUnorderedList", "•", "Bullet list"], ["insertOrderedList", "1.", "Numbered list"],
+      ["sep"], ["removeFormat", "⨯", "Clear formatting"],
+    ];
+    const area = el("div", "rte-area");
+    area.contentEditable = "true";
+    area.setAttribute("data-placeholder", placeholder || "");
+    area.innerHTML = sanitize(initialHTML || "");
+
+    cmds.forEach(c => {
+      if (c[0] === "sep") { bar.appendChild(el("span", "sep")); return; }
+      const b = el("button", null, c[1]); b.type = "button"; b.title = c[2];
+      b.onmousedown = e => e.preventDefault();
+      b.onclick = () => { area.focus(); document.execCommand(c[0], false, null); };
+      bar.appendChild(b);
+    });
+    if (withBlank) {
+      bar.appendChild(el("span", "sep"));
+      const bb = el("button", "wide", "▭ Blank"); bb.type = "button"; bb.title = "Hide selected text as a blank";
+      bb.onmousedown = e => e.preventDefault();
+      bb.onclick = () => makeBlank(area);
+      bar.appendChild(bb);
+    }
+    // click a blank pill to remove it
+    area.addEventListener("click", e => {
+      const b = e.target.closest(".blank");
+      if (b && area.contains(b)) { const t = document.createTextNode(b.textContent); b.replaceWith(t); }
+    });
+
+    wrap.appendChild(bar); wrap.appendChild(area);
+    wrap._getHTML = () => sanitize(area.innerHTML).trim();
+    wrap._area = area;
+    return wrap;
+  }
+
+  function makeBlank(area) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) { toast("Select the word(s) to hide first"); return; }
+    const range = sel.getRangeAt(0);
+    if (!area.contains(range.commonAncestorContainer)) { toast("Select text inside the box"); return; }
+    const text = sel.toString();
+    if (!text.trim()) return;
+    const span = document.createElement("span");
+    span.className = "blank";
+    span.setAttribute("data-answer", text);
+    span.textContent = text;
+    range.deleteContents();
+    range.insertNode(span);
+    sel.removeAllRanges();
+    area.focus();
+  }
+
+  /* ----- Card editor ----- */
+  function openCardEditor(deckId, cardId, presetType) {
+    const deck = deckById(deckId);
+    const editing = cardId ? deck.cards.find(c => c.id === cardId) : null;
+    let type = editing ? editing.type : (presetType || "basic");
+
+    const n = el("div");
+    n.innerHTML = `
+    <div class="modal-head">
+      <h2>${editing ? "Edit card" : "New card"}</h2>
+      <div style="margin-top:12px" class="seg" id="typeSeg">
+        <button data-type="basic" class="${type === "basic" ? "on" : ""}">Basic</button>
+        <button data-type="fill" class="${type === "fill" ? "on" : ""}">Fill-in-the-blank</button>
+      </div>
+    </div>
+    <div class="modal-body" id="cardBody"></div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancel</button>
+      <button class="btn btn-primary" id="cardSave">${editing ? "Save changes" : "Add card"}</button>
+    </div>`;
+    openModal(n);
+
+    const body = n.querySelector("#cardBody");
+    let frontRTE, backRTE, fillRTE;
+
+    function drawBody() {
+      body.innerHTML = "";
+      if (type === "basic") {
+        const f1 = el("div", "field"); f1.appendChild(el("label", null, "Front (question)"));
+        frontRTE = buildRTE(editing && editing.type === "basic" ? editing.front : "", "The prompt you'll see first…", false);
+        f1.appendChild(frontRTE); body.appendChild(f1);
+        const f2 = el("div", "field"); f2.appendChild(el("label", null, "Back (answer)"));
+        backRTE = buildRTE(editing && editing.type === "basic" ? editing.back : "", "The answer, revealed on flip…", false);
+        f2.appendChild(backRTE); body.appendChild(f2);
+      } else {
+        const f = el("div", "field"); f.appendChild(el("label", null, "Sentence"));
+        fillRTE = buildRTE(editing && editing.type === "fill" ? editing.prompt : "", "Type a sentence, then select a word and press Blank…", true);
+        f.appendChild(fillRTE); body.appendChild(f);
+        body.appendChild(el("div", "hint",
+          `Select any word and hit <b>▭ Blank</b> to hide it. For alternatives, select text like <code>color|colour</code> before blanking — any of them counts as correct. Click a blank to remove it.`));
+      }
+    }
+    drawBody();
+
+    n.querySelectorAll("#typeSeg button").forEach(b => b.onclick = () => {
+      if (editing) { toast("Card type can't change after creation"); return; }
+      type = b.dataset.type;
+      n.querySelectorAll("#typeSeg button").forEach(x => x.classList.toggle("on", x.dataset.type === type));
+      drawBody();
+    });
+
+    n.querySelector("#cardSave").onclick = () => {
+      if (type === "basic") {
+        const front = frontRTE._getHTML(), back = backRTE._getHTML();
+        if (!plainText(front)) { toast("Add a front/question"); return; }
+        if (!plainText(back)) { toast("Add a back/answer"); return; }
+        if (editing) { editing.front = front; editing.back = back; }
+        else deck.cards.push({ id: uid(), type: "basic", front, back, srs: { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 } });
+      } else {
+        const prompt = fillRTE._getHTML();
+        if (!plainText(prompt)) { toast("Write a sentence"); return; }
+        if (!/class="blank"/.test(prompt)) { toast("Mark at least one blank"); return; }
+        if (editing) editing.prompt = prompt;
+        else deck.cards.push({ id: uid(), type: "fill", prompt, srs: { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 } });
+      }
+      closeModal(); render(); toast(editing ? "Card saved" : "Card added");
+    };
+  }
+
+  /* =========================================================================
+     Study mode + spaced repetition (SM-2 lite)
+     ========================================================================= */
+  const study = { queue: [], index: 0, phase: "question", reviewed: 0, againCount: 0, scope: null };
+
+  function gatherCards(scope, mode) {
+    let cards = [];
+    if (scope.type === "deck") { const d = deckById(scope.id); if (d) cards = d.cards.slice(); }
+    else if (scope.type === "subject") decksInSubject(scope.id).forEach(d => cards.push(...d.cards));
+    else state.decks.forEach(d => cards.push(...d.cards));
+    if (mode === "due") cards = cards.filter(isDue);
+    for (let i = cards.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [cards[i], cards[j]] = [cards[j], cards[i]]; }
+    return cards;
+  }
+
+  function startStudy(scope, mode) {
+    const cards = gatherCards(scope, mode);
+    if (!cards.length) { toast(mode === "due" ? "Nothing due right now — try Cram" : "No cards to study"); return; }
+    study.queue = cards; study.index = 0; study.phase = "question"; study.reviewed = 0; study.againCount = 0; study.scope = scope; study.mode = mode;
+
+    let label = "All decks";
+    if (scope.type === "deck") label = deckById(scope.id)?.name || "Deck";
+    else if (scope.type === "subject") label = (ui.subjectId === "__uncat" ? "Uncategorized" : subjectById(scope.id)?.name) || "Subject";
+    $("#studyScope").textContent = `${label} · ${mode === "cram" ? "cram" : "due"} · ${cards.length} card${cards.length === 1 ? "" : "s"}`;
+    $("#study").classList.add("open");
+    renderStudyCard();
+  }
+
+  function endStudy() {
+    $("#study").classList.remove("open");
+    $("#studyStage").innerHTML = ""; $("#studyControls").innerHTML = "";
+    render();
+  }
+
+  function renderProgress() {
+    const total = study.queue.length;
+    const done = Math.min(study.index, total);
+    $("#studyCount").textContent = `${done} / ${total}`;
+    $("#studyProgress").style.width = total ? `${(done / total) * 100}%` : "0%";
+  }
+
+  function renderStudyCard() {
+    renderProgress();
+    const stage = $("#studyStage"), controls = $("#studyControls");
+    stage.innerHTML = ""; controls.innerHTML = "";
+
+    if (study.index >= study.queue.length) return renderSessionDone();
+    const card = study.queue[study.index];
+    study.phase = "question";
+
+    const wrap = el("div", "card-wrap");
+    wrap.appendChild(el("div", "stack-layer l2"));
+    wrap.appendChild(el("div", "stack-layer l1"));
+
+    if (card.type === "basic") {
+      const fc = el("div", "flashcard");
+      fc.innerHTML = `<div class="flashcard-inner">
+        <div class="face front"><div class="face-label">Question</div><div class="face-content">${sanitize(card.front)}</div><div class="tap-hint">tap or press Space to flip</div></div>
+        <div class="face back"><div class="face-label">Answer</div><div class="face-content small">${sanitize(card.back)}</div></div>
+      </div>`;
+      fc.onclick = () => { if (study.phase === "question") flipCard(); };
+      wrap.appendChild(fc);
+      stage.appendChild(wrap);
+      controls.appendChild(bigAction("Show answer", flipCard));
+    } else {
+      const fc = el("div", "fill-card");
+      const promptHTML = buildFillPrompt(card.prompt);
+      fc.appendChild(promptHTML.node);
+      const keyEl = el("div", "answer-key"); keyEl.style.display = "none"; keyEl.id = "answerKey";
+      fc.appendChild(keyEl);
+      wrap.appendChild(fc);
+      stage.appendChild(wrap);
+      setTimeout(() => promptHTML.inputs[0] && promptHTML.inputs[0].focus(), 30);
+      study._fillInputs = promptHTML.inputs;
+      const check = bigAction("Check answer", () => gradeFill(card));
+      controls.appendChild(check);
+      promptHTML.inputs.forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); gradeFill(card); } }));
+    }
+  }
+
+  function buildFillPrompt(html) {
+    const container = el("div", "fill-prompt");
+    container.innerHTML = sanitize(html);
+    const inputs = [];
+    container.querySelectorAll(".blank").forEach(span => {
+      const answer = span.getAttribute("data-answer") || span.textContent;
+      const input = el("input", "fill-input");
+      input.type = "text"; input.setAttribute("data-answer", answer); input.autocomplete = "off"; input.spellcheck = false;
+      const longest = answer.split("|").reduce((a, b) => a.length >= b.length ? a : b, "");
+      input.style.width = Math.max(90, longest.length * 16) + "px";
+      span.replaceWith(input);
+      inputs.push(input);
+    });
+    return { node: container, inputs };
+  }
+
+  function gradeFill(card) {
+    if (study.phase !== "question") return;
+    const inputs = study._fillInputs || [];
+    let allOk = true; const misses = [];
+    inputs.forEach(inp => {
+      const accepted = inp.getAttribute("data-answer").split("|").map(a => a.trim().toLowerCase());
+      const val = inp.value.trim().toLowerCase();
+      const ok = accepted.includes(val) && val !== "";
+      inp.classList.toggle("correct", ok);
+      inp.classList.toggle("incorrect", !ok);
+      inp.disabled = true;
+      if (!ok) { allOk = false; misses.push(inp.getAttribute("data-answer").split("|")[0]); }
+    });
+    const key = $("#answerKey");
+    key.style.display = "block";
+    key.innerHTML = allOk
+      ? `<span class="ok">✓ All correct</span>`
+      : `Answer${misses.length > 1 ? "s" : ""}: ${misses.map(m => `<b>${escapeAttr(m)}</b>`).join(", ")}`;
+    study.phase = "answer";
+    showRatings(card, allOk);
+  }
+
+  function flipCard() {
+    if (study.phase !== "question") return;
+    const fc = $("#studyStage .flashcard");
+    if (fc) fc.classList.add("flipped");
+    study.phase = "answer";
+    showRatings(study.queue[study.index], null);
+  }
+
+  function bigAction(label, fn) {
+    const wrap = el("div", "big-action");
+    const b = el("button", "btn btn-primary", label); b.style.padding = "12px 28px"; b.style.fontSize = "15px";
+    b.onclick = fn; wrap.appendChild(b); return wrap;
+  }
+
+  function showRatings(card, autoGood) {
+    const controls = $("#studyControls");
+    controls.innerHTML = "";
+    const row = el("div", "rate-row");
+    const defs = [
+      ["again", "Again", "1", 0], ["hard", "Hard", "2", 1],
+      ["good", "Good", "3", 2], ["easy", "Easy", "4", 3],
+    ];
+    defs.forEach(([cls, lbl, key, grade]) => {
+      const b = el("button", `rate ${cls}`, `<span>${lbl}</span><small>${key} · ${nextLabel(card, grade)}</small>`);
+      b.onclick = () => rateCard(card, grade);
+      row.appendChild(b);
+    });
+    controls.appendChild(row);
+    const hint = el("div", "study-count", autoGood === false ? "Some blanks missed — be honest with your rating." : "Press 1–4, or click.");
+    controls.appendChild(hint);
+  }
+
+  function nextLabel(card, grade) {
+    const preview = previewInterval(card.srs, grade);
+    if (preview === 0) return "soon";
+    if (preview < 1) return "<1d";
+    return preview + "d";
+  }
+  function previewInterval(s, grade) {
+    if (grade === 0) return 0;
+    if (s.reps === 0) return grade === 1 ? 1 : grade === 2 ? 1 : 4;
+    if (s.reps === 1) return grade === 1 ? 3 : grade === 2 ? 6 : 10;
+    const mult = grade === 1 ? 1.2 : grade === 2 ? s.ease : s.ease * 1.3;
+    return Math.max(1, Math.round(s.interval * mult));
+  }
+
+  function rateCard(card, grade) {
+    const s = card.srs;
+    if (grade === 0) {
+      s.reps = 0; s.lapses++; s.interval = 0; s.ease = Math.max(1.3, s.ease - 0.2); s.due = Date.now();
+      study.queue.push(card); study.againCount++;
+    } else {
+      s.interval = previewInterval(s, grade);
+      if (grade === 1) s.ease = Math.max(1.3, s.ease - 0.15);
+      if (grade === 3) s.ease = s.ease + 0.15;
+      s.reps++; s.due = Date.now() + s.interval * DAY;
+    }
+    study.reviewed++;
+    study.index++;
+    persist(); // save spaced-repetition progress as you go
+    renderStudyCard();
+  }
+
+  function renderSessionDone() {
+    renderProgress();
+    const stage = $("#studyStage"), controls = $("#studyControls");
+    const acc = study.reviewed ? Math.round(((study.reviewed - study.againCount) / study.reviewed) * 100) : 0;
+    stage.innerHTML = `<div class="session-done">
+      <div class="em">🎉</div>
+      <div class="big">Session complete</div>
+      <p class="page-sub">You reviewed <b>${study.reviewed}</b> card${study.reviewed === 1 ? "" : "s"} · ${study.againCount} marked again · ${acc}% first-try.</p>
+    </div>`;
+    controls.innerHTML = "";
+    const b = el("button", "btn btn-primary", "Back to deck"); b.style.padding = "12px 26px";
+    b.onclick = endStudy; controls.appendChild(b);
+  }
+
+  /* keyboard shortcuts in study */
+  document.addEventListener("keydown", e => {
+    if (!$("#study").classList.contains("open")) return;
+    if (e.key === "Escape") { endStudy(); return; }
+    const card = study.queue[study.index];
+    if (!card) return;
+    if (study.phase === "question") {
+      if (card.type === "basic" && e.code === "Space") { e.preventDefault(); flipCard(); }
+    } else if (study.phase === "answer") {
+      if (["1", "2", "3", "4"].includes(e.key)) { e.preventDefault(); rateCard(card, parseInt(e.key, 10) - 1); }
+    }
+  });
+
+  /* =========================================================================
+     Export / Import
+     ========================================================================= */
+  function exportData() {
+    const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), ...state }, null, 2)], { type: "application/json" });
+    const a = el("a"); a.href = URL.createObjectURL(blob);
+    a.download = `recall-flashcards-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click(); URL.revokeObjectURL(a.href); toast("Exported to file");
+  }
+  function importData(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data.decks)) throw new Error("bad");
+        confirmModal("Replace current data?", "Importing will replace everything in this session. Export first if you want a backup.", () => {
+          state = { subjects: Array.isArray(data.subjects) ? data.subjects : [], decks: data.decks };
+          state.decks.forEach(d => d.cards.forEach(c => { if (!c.srs) c.srs = { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 }; }));
+          ui.view = "dashboard"; ui.deckId = null; ui.subjectId = null;
+          render(); toast("Imported");
+        });
+      } catch { toast("Couldn't read that file — is it a Recall export?"); }
+    };
+    reader.readAsText(file);
+  }
+
+  /* =========================================================================
+     Wiring
+     ========================================================================= */
+  $("#newDeckBtn").onclick = () => openDeckEditor();
+  $("#studyDueBtn").onclick = () => startStudy({ type: "all" }, "due");
+  $("#studyExit").onclick = endStudy;
+  $("#exportBtn").onclick = exportData;
+  $("#importBtn").onclick = () => $("#fileInput").click();
+  $("#fileInput").onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); e.target.value = ""; };
+  $("#searchInput").addEventListener("input", e => { ui.search = e.target.value; render(); });
+  $("#themeBtn").onclick = () => {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  };
+  const menuBtn = $("#menuBtn"), sidebar = $("#sidebar");
+  menuBtn.onclick = () => sidebar.classList.toggle("open");
+  function closeSidebar() { sidebar.classList.remove("open"); }
+
+  // expose for inline onclick handlers
+  window.openDeckEditor = openDeckEditor;
+  window.addEventListener("beforeunload", persist); // final save before the tab closes
+
+  render();
+</script>
+</body>
+</html>

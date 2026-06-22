@@ -1443,6 +1443,19 @@
         body.appendChild(el("div", "hint",
           `Select any word and hit <b>▭ Blank</b> (or <b>Ctrl+Shift+B</b>) to hide it. For alternatives, select text like <code>color|colour</code> before blanking — any of them counts as correct. Click a blank to remove it.`));
       }
+      focusFront();
+    }
+    function focusFront() {
+      // Land the caret on the card's front field (the Sentence box for fill cards)
+      // as soon as the editor opens, at the end of any existing content.
+      const area = (type === "basic" ? frontRTE : fillRTE)?._area;
+      if (!area) return;
+      setTimeout(() => {
+        area.focus();
+        const r = document.createRange();
+        r.selectNodeContents(area); r.collapse(false);
+        const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      }, 30);
     }
     drawBody();
 

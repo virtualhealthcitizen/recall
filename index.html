@@ -1137,6 +1137,23 @@
     sizeSel.onchange = () => { applyCodeSize(area, sizeSel.value); area.focus(); };
     sizeWrap.prepend(sizeSel);
     bar.appendChild(sizeWrap);
+    // New code blocks read their size from here; the selector reflects the block
+    // the caret is in. Keeps the toolbar value and the actual block size in sync.
+    area._sizeSel = sizeSel;
+    const syncSizeSel = () => {
+      const sel = window.getSelection();
+      const a = sel.rangeCount ? sel.anchorNode : null;
+      if (!a || !area.contains(a)) return;
+      const node = a.nodeType === 3 ? a.parentElement : a;
+      const pre = node && node.closest ? node.closest("pre") : null;
+      if (!pre) return;
+      const px = parseInt(pre.style.fontSize, 10) || Math.round(parseFloat(getComputedStyle(pre).fontSize));
+      const opts = [...sizeSel.options].map(o => +o.value);
+      let best = opts[0]; opts.forEach(o => { if (Math.abs(o - px) < Math.abs(best - px)) best = o; });
+      sizeSel.value = String(best);
+    };
+    area.addEventListener("keyup", syncSizeSel);
+    area.addEventListener("mouseup", syncSizeSel);
 
     if (withBlank) {
       bar.appendChild(el("span", "sep"));
@@ -1332,6 +1349,8 @@
     const code = document.createElement("code");
     code.textContent = text || "\n";
     pre.appendChild(code);
+    // Adopt the toolbar's current size so the new block matches what's shown.
+    pre.style.fontSize = (area._sizeSel ? area._sizeSel.value : 14) + "px";
     if (range && area.contains(range.commonAncestorContainer)) {
       if (!sel.isCollapsed) range.deleteContents();
       range.insertNode(pre);

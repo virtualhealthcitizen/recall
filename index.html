@@ -319,7 +319,9 @@
             border-radius: 10px; display: inline-block; vertical-align: middle;
             margin: 4px 2px; box-shadow: 0 1px 4px rgba(0,0,0,.12);
         }
-        .rte-area img { cursor: default; }
+        /* Editor images: hover affordance; the cursor is driven from JS (the area's
+           cursor is inherited) so dragging the bottom-right corner resizes them. */
+        .rte-area img:hover { outline: 2px solid var(--accent-soft); outline-offset: 1px; }
         .face-content pre, .fill-prompt pre {
             font-family: var(--mono); font-size: 14px; font-weight: 400;
             max-height: 200px; overflow-y: auto; width: 100%;
@@ -1227,6 +1229,37 @@
       })();
     });
 
+    // ---- Resize images by dragging their bottom-right corner. Aspect ratio is
+    // preserved because we only ever set the width (height stays auto). The chosen
+    // width is an inline style, so it's saved with the card and shown when studying. ----
+    const IMG_GRIP = 16;
+    const onImgGrip = (img, x, y) => { const r = img.getBoundingClientRect(); return x >= r.right - IMG_GRIP && y >= r.bottom - IMG_GRIP; };
+    area.addEventListener("mousemove", e => {
+      if (area._imgResizing) return;
+      const img = e.target.closest ? e.target.closest("img.rte-img") : null;
+      const c = (img && area.contains(img)) ? (onImgGrip(img, e.clientX, e.clientY) ? "nwse-resize" : "default") : "";
+      if (area.style.cursor !== c) area.style.cursor = c; // on the area; never saved with content
+    });
+    area.addEventListener("mousedown", e => {
+      const img = e.target.closest ? e.target.closest("img.rte-img") : null;
+      if (!img || !area.contains(img) || !onImgGrip(img, e.clientX, e.clientY)) return;
+      e.preventDefault();
+      area._imgResizing = true;
+      const startX = e.clientX, startW = img.getBoundingClientRect().width, maxW = area.clientWidth - 4;
+      const onMove = ev => {
+        ev.preventDefault();
+        const w = Math.round(Math.max(40, Math.min(startW + (ev.clientX - startX), maxW)));
+        img.style.width = w + "px"; img.style.height = "auto"; img.style.maxHeight = "none";
+      };
+      const onUp = () => {
+        area._imgResizing = false; area.style.cursor = "";
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+      };
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+    });
+
     // ---- Undo / redo. The browser's native undo stack can't track the editor's
     // direct DOM edits (blanks, inline code, code blocks, seeded lists), so we keep
     // our own: a MutationObserver snapshots HTML + caret after each change, and
@@ -2090,6 +2123,9 @@
 
   // expose for inline onclick handlers
   window.openDeckEditor = openDeckEditor;
+  // Turn off the browser's native image-resize handles (Firefox) — they don't lock
+  // aspect ratio; our own corner-drag resizer does.
+  try { document.execCommand("enableObjectResizing", false, false); } catch (e) {}
   // Flush pending saves when leaving / backgrounding the app (more reliable than
   // beforeunload alone, especially on mobile).
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushPersist(); });

@@ -266,10 +266,16 @@
         .rte-bar button {
             border: none; background: none; color: var(--ink-soft); width: 30px; height: 30px;
             border-radius: 7px; font-size: 14px; display: grid; place-items: center;
+            padding: 0; box-sizing: border-box; flex: none; line-height: 1; white-space: nowrap;
         }
         .rte-bar button:hover { background: var(--surface-2); color: var(--ink); }
-        .rte-bar button.wide { width: auto; padding: 0 10px; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--amber); }
-        .rte-bar .sep { width: 1px; background: var(--line); margin: 4px 3px; }
+        .rte-bar button.wide { width: auto; min-width: 30px; padding: 0 10px; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--amber); display: inline-flex; align-items: center; justify-content: center; }
+        /* Toolbar glyphs built from <code>/<b>/<i> must not inherit the page's code
+           pill (background + padding) — on Windows that widened the monospace "</>"
+           until it wrapped to two lines and knocked the button off-center. */
+        .rte-bar button code { background: none; padding: 0; border: 0; border-radius: 0; font-family: var(--mono); font-size: .92em; line-height: 1; }
+        .rte-bar button > * { line-height: 1; pointer-events: none; }
+        .rte-bar .sep { width: 1px; flex: none; background: var(--line); margin: 4px 3px; align-self: stretch; }
         .rte-area { min-height: 96px; max-height: 240px; overflow-y: auto; padding: 12px 14px; outline: none; font-size: 15px; background: var(--surface); }
         .rte-area:empty::before { content: attr(data-placeholder); color: var(--ink-faint); }
         .rte-area b, .rte-area strong { font-weight: 700; }
@@ -311,7 +317,14 @@
             background: var(--amber-soft); color: var(--amber); font-weight: 600;
             padding: 1px 7px; border-radius: 6px; border-bottom: 2px solid var(--amber); cursor: pointer; white-space: nowrap;
         }
-        .blank:hover { filter: brightness(.96); text-decoration: line-through; }
+        /* "×" remove affordance — editor only; purely presentational so it never
+           ends up in saved HTML or the answer text. Click anywhere on the pill
+           (incl. the icon) to remove the blank. */
+        .rte-area .blank::after {
+            content: "×"; margin-left: 6px; font-weight: 700; opacity: .55;
+        }
+        .blank:hover { filter: brightness(.97); }
+        .rte-area .blank:hover::after { opacity: 1; color: var(--red); }
         .hint { font-size: 12px; color: var(--ink-faint); margin-top: 7px; line-height: 1.45; }
         .hint code { font-family: var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 5px; font-size: 11.5px; }
 
@@ -1025,6 +1038,45 @@
     area.contentEditable = "true";
     area.setAttribute("data-placeholder", placeholder || "");
     area.innerHTML = sanitize(initialHTML || "");
+    // Blanks loaded for editing need the same caret guards as freshly-made ones,
+    // so typing beside them never leaks the yellow styling onto the new text.
+    if (withBlank) area.querySelectorAll(".blank").forEach(guardBlank);
+
+    // ---- Undo / redo. The browser's native undo stack can't track the editor's
+    // direct DOM edits (blanks, inline code, code blocks, seeded lists), so we keep
+    // our own: a MutationObserver snapshots HTML + caret after each change, and
+    // Ctrl+Z / Ctrl+Y restore from the stack. ----
+    const history = [{ html: area.innerHTML, sel: null }];
+    let hpos = 0, idleTimer = null, maxTimer = null, mo = null;
+    function commitHistory() {
+      clearTimeout(idleTimer); clearTimeout(maxTimer); idleTimer = maxTimer = null;
+      const html = area.innerHTML;
+      if (html === history[hpos].html) { history[hpos].sel = saveRteSel(area); return; }
+      history.splice(hpos + 1);              // dropping any redo branch
+      history.push({ html, sel: saveRteSel(area) });
+      if (history.length > 200) history.shift();
+      hpos = history.length - 1;
+    }
+    function scheduleCommit() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(commitHistory, 250);      // commit on a typing pause
+      if (!maxTimer) maxTimer = setTimeout(commitHistory, 900); // ...or mid-burst
+    }
+    function applyHistory() {
+      mo.disconnect();                        // our own writes must not be recorded
+      area.innerHTML = history[hpos].html;
+      if (withBlank) area.querySelectorAll(".blank").forEach(guardBlank);
+      history[hpos].html = area.innerHTML;    // re-sync: guardBlank may have added a
+                                              // guard node, so keep snapshot == DOM or
+                                              // the next commit mistakes it for an edit
+      area.focus();
+      restoreRteSel(area, history[hpos].sel);
+      mo.observe(area, { subtree: true, childList: true, characterData: true, attributes: true });
+    }
+    function undo() { commitHistory(); if (hpos > 0) { hpos--; applyHistory(); } }
+    function redo() { if (hpos < history.length - 1) { hpos++; applyHistory(); } }
+    mo = new MutationObserver(scheduleCommit);
+    mo.observe(area, { subtree: true, childList: true, characterData: true, attributes: true });
 
     // keyboard shortcuts for formatting (conventional keys)
     area.addEventListener("keydown", e => {
@@ -1034,6 +1086,10 @@
       if (!ctrl) return;
       const key = e.key.toLowerCase();
       const shift = e.shiftKey;
+      // Undo (Ctrl+Z) / Redo (Ctrl+Y or Ctrl+Shift+Z) — handled by our own stack
+      // so the custom DOM edits revert too.
+      if (key === "z" && !shift) { e.preventDefault(); undo(); return; }
+      if (key === "y" || (key === "z" && shift)) { e.preventDefault(); redo(); return; }
       let cmd = null;
       if (key === "b" && !shift) cmd = "bold";
       else if (key === "i" && !shift) cmd = "italic";
@@ -1041,9 +1097,10 @@
       else if (key === "s" && shift) cmd = "strikeThrough";
       else if (key === "]") cmd = "indent";
       else if (key === "[") cmd = "outdent";
-      else if (key === "8" && shift) cmd = "insertUnorderedList";
-      else if (key === "7" && shift) cmd = "insertOrderedList";
-      if (cmd) { e.preventDefault(); document.execCommand(cmd, false, null); }
+      // Shift+8/7 report e.key as "*"/"&" on US layouts, so match the physical key.
+      else if (shift && (e.code === "Digit8" || key === "8" || key === "*")) cmd = "insertUnorderedList";
+      else if (shift && (e.code === "Digit7" || key === "7" || key === "&")) cmd = "insertOrderedList";
+      if (cmd) { e.preventDefault(); runEditCommand(area, cmd); }
       if (key === "e" && !shift) { e.preventDefault(); toggleInlineCode(area); }
       if (key === "e" && shift) { e.preventDefault(); insertCodeBlock(area); }
       if (withBlank && key === "b" && shift) { e.preventDefault(); makeBlank(area); }
@@ -1053,7 +1110,7 @@
       if (c[0] === "sep") { bar.appendChild(el("span", "sep")); return; }
       const b = el("button", null, c[1]); b.type = "button"; b.title = c[2];
       b.onmousedown = e => e.preventDefault();
-      b.onclick = () => { area.focus(); document.execCommand(c[0], false, null); };
+      b.onclick = () => runEditCommand(area, c[0]);
       bar.appendChild(b);
     });
     // Code snippet buttons
@@ -1093,6 +1150,17 @@
       const b = e.target.closest(".blank");
       if (b && area.contains(b)) { const t = document.createTextNode(b.textContent); b.replaceWith(t); area.normalize(); }
     });
+    // A blank is contenteditable=false, so browsers won't delete it with the
+    // keyboard. Make Backspace/Delete next to a blank remove the whole word.
+    if (withBlank) area.addEventListener("keydown", e => {
+      if (e.key !== "Backspace" && e.key !== "Delete") return;
+      const sel = window.getSelection();
+      if (!sel.rangeCount || !sel.isCollapsed) return;
+      const range = sel.getRangeAt(0);
+      if (!area.contains(range.startContainer)) return;
+      const blank = adjacentBlank(range, e.key === "Backspace" ? -1 : 1);
+      if (blank) { e.preventDefault(); deleteBlank(blank, area); }
+    });
 
     wrap.appendChild(bar); wrap.appendChild(area);
     wrap._getHTML = () => sanitize(area.innerHTML).trim();
@@ -1107,6 +1175,99 @@
       node.parentNode.insertBefore(document.createTextNode("\u200B"), node.nextSibling);
     }
     return node.nextSibling;
+  }
+
+  function guardBlank(span) {
+    // Hug an atomic blank with a plain text node on each side so the caret can
+    // never land inside it. Without this, typing next to a blank (e.g. changing
+    // the answer after marking it) leaks the blank's yellow styling onto the new
+    // text in Firefox. Idempotent - skips a side that already has a text node.
+    const p = span.parentNode; if (!p) return;
+    if (!(span.nextSibling && span.nextSibling.nodeType === 3))
+      p.insertBefore(document.createTextNode("\u200B"), span.nextSibling);
+    if (!(span.previousSibling && span.previousSibling.nodeType === 3))
+      p.insertBefore(document.createTextNode("\u200B"), span);
+  }
+
+  function isZeroWidth(n) { return n && n.nodeType === 3 && /^\u200B*$/.test(n.nodeValue); }
+
+  function adjacentBlank(range, dir) {
+    // Return the .blank element immediately beside a collapsed caret (dir -1 =
+    // before / Backspace, +1 = after / Delete), or null. Only zero-width guard
+    // nodes may sit between the caret and the blank.
+    const node = range.startContainer, off = range.startOffset;
+    if (node.nodeType === 3) {
+      const slice = dir < 0 ? node.nodeValue.slice(0, off) : node.nodeValue.slice(off);
+      if (/[^\u200B]/.test(slice)) return null; // real text between caret and blank
+      let sib = dir < 0 ? node.previousSibling : node.nextSibling;
+      while (isZeroWidth(sib)) sib = dir < 0 ? sib.previousSibling : sib.nextSibling;
+      return sib && sib.nodeType === 1 && sib.classList.contains("blank") ? sib : null;
+    }
+    let child = node.childNodes[dir < 0 ? off - 1 : off];
+    while (isZeroWidth(child)) child = dir < 0 ? child.previousSibling : child.nextSibling;
+    return child && child.nodeType === 1 && child.classList.contains("blank") ? child : null;
+  }
+
+  function deleteBlank(blank, area) {
+    // Remove the whole atomic blank (the word) and drop the caret where it was.
+    const next = blank.nextSibling, prev = blank.previousSibling, parent = blank.parentNode;
+    blank.remove();
+    const r = document.createRange();
+    if (next) r.setStartBefore(next);
+    else if (prev) r.setStartAfter(prev);
+    else r.setStart(parent, 0);
+    r.collapse(true);
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    area.normalize();
+  }
+
+  function isEmptyEditable(area) {
+    // A contentEditable that holds no real content (browsers leave it as "" or
+    // a lone <br>, sometimes with a zero-width guard node).
+    return area.innerHTML.replace(/[​\s]/g, "").replace(/<br\/?>/gi, "") === "";
+  }
+
+  // ---- Selection <-> character-offset (so a caret survives an innerHTML swap
+  // during undo/redo). Offsets count text-content characters from the start. ----
+  function saveRteSel(area) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return null;
+    const r = sel.getRangeAt(0);
+    if (!area.contains(r.startContainer) || !area.contains(r.endContainer)) return null;
+    const off = (node, o) => { const p = document.createRange(); p.setStart(area, 0); p.setEnd(node, o); return p.cloneContents().textContent.length; };
+    try { return { start: off(r.startContainer, r.startOffset), end: off(r.endContainer, r.endOffset) }; }
+    catch (_) { return null; }
+  }
+  function restoreRteSel(area, saved) {
+    if (!saved) return;
+    const locate = target => {
+      let count = 0, n;
+      const w = document.createTreeWalker(area, NodeFilter.SHOW_TEXT, null);
+      while ((n = w.nextNode())) { const len = n.nodeValue.length; if (count + len >= target) return { node: n, off: target - count }; count += len; }
+      return { node: area, off: area.childNodes.length };
+    };
+    try {
+      const s = locate(saved.start), e = locate(saved.end);
+      const r = document.createRange(); r.setStart(s.node, s.off); r.setEnd(e.node, e.off);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    } catch (_) {}
+  }
+
+  function runEditCommand(area, cmd) {
+    area.focus();
+    // Firefox treats insertUnordered/OrderedList as a no-op on a truly empty
+    // editor, so the first bullet never appears. Seed the list ourselves.
+    if ((cmd === "insertUnorderedList" || cmd === "insertOrderedList") && isEmptyEditable(area)) {
+      const list = document.createElement(cmd === "insertOrderedList" ? "ol" : "ul");
+      const li = list.appendChild(document.createElement("li"));
+      li.appendChild(document.createElement("br"));
+      area.innerHTML = "";
+      area.appendChild(list);
+      const r = document.createRange(); r.setStart(li, 0); r.collapse(true);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      return;
+    }
+    document.execCommand(cmd, false, null);
   }
 
   function exitInlineCode(area) {
@@ -1209,9 +1370,13 @@
     span.textContent = text;
     range.deleteContents();
     range.insertNode(span);
-    // place cursor right after the blank so typing resumes in normal text
+    // Give the caret a plain-text home on each side of the blank, then drop it
+    // just past the blank so typing resumes in normal (non-yellow) text.
+    guardBlank(span);
+    const after = span.nextSibling; // guaranteed text node by guardBlank
+    const off = after.nodeValue === "​" ? after.nodeValue.length : 0;
     const afterRange = document.createRange();
-    afterRange.setStartAfter(span);
+    afterRange.setStart(after, off);
     afterRange.collapse(true);
     sel.removeAllRanges();
     sel.addRange(afterRange);

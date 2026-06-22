@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-22T15:22:45.768Z",
+  "subjects": [
+    {
+      "id": "nn57ngr7cw",
+      "name": "Spanish",
+      "color": "#5b53d6"
+    },
+    {
+      "id": "zlfuwo27cw",
+      "name": "Biology",
+      "color": "#2f9e72"
+    },
+    {
+      "id": "rmqxu9pozf",
+      "name": "Software Development",
+      "color": "#9b51e0"
+    }
+  ],
+  "decks": [
+    {
+      "id": "tkvytj37cw",
+      "name": "Travel basics",
+      "subjectId": "nn57ngr7cw",
+      "description": "Everyday words and phrases for getting around.",
+      "createdAt": 1781710768256,
+      "cards": [
+        {
+          "id": "9rwt3wf7cw",
+          "type": "basic",
+          "front": "the airport",
+          "back": "<b>el aeropuerto</b>",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "89m4t4z7cw",
+          "type": "basic",
+          "front": "Where is the station?",
+          "back": "¿Dónde está <b>la estación</b>?",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "iiot4fg7cw",
+          "type": "fill",
+          "prompt": "Quiero comprar un <span class=\"blank\" data-answer=\"billete|boleto\">billete</span> de tren.",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "efxu2sq7cw",
+      "name": "Cell biology",
+      "subjectId": "zlfuwo27cw",
+      "description": "Organelles and the basics of the cell.",
+      "createdAt": 1781710768256,
+      "cards": [
+        {
+          "id": "sxq1kmy7cw",
+          "type": "basic",
+          "front": "Powerhouse of the cell",
+          "back": "The <b>mitochondrion</b>",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "tvwr25e7cw",
+          "type": "fill",
+          "prompt": "The <span class=\"blank\" data-answer=\"nucleus\">nucleus</span> holds the cell's genetic material.",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "8aruai0946",
+      "name": "Spring framework",
+      "subjectId": "rmqxu9pozf",
+      "description": "Test your knowledge on Spring framework",
+      "createdAt": 1782141452070,
+      "cards": [
+        {
+          "id": "5k6nj530wq",
+          "type": "fill",
+          "prompt": "<code><span class=\"blank\" data-answer=\"@Profile\" contenteditable=\"false\">@Profile</span></code> is an example of a conditional configuration. When you annotate a component with <code><span class=\"blank\" data-answer=\"@Profile\" contenteditable=\"false\">@Profile</span></code>, the component is initialized conditionally when a specified profile is active.",
+          "srs": {
+            "due": 1782141534746,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "th3u64v0q1",
+          "type": "basic",
+          "front": "<div>When you build a web application, you have to decide which development stack you want.</div><div>There are two types of Spring MVC applications:</div><div><ul><li>Web Servlet (Traditional Spring MVC)</li><li>Web Reactive</li></ul><div>Describe the&nbsp;<b>Web Reactive</b>&nbsp;development stack.</div></div>",
+          "back": "<div><b>Web Reactive</b>: This is the new way of building web applications using Spring WebFlux.</div><div><ul><li>Newer, more efficient</li><li>Non-blocking</li><li>Based on the Reactive Streams API</li><li>Requires knowledge of reactive programming</li><li>Uses the <code>DispatcherHandler</code> to handle requests</li><li>Netty, Undertow, Servlet 3.1+</li><li>Specification</li></ul></div>",
+          "srs": {
+            "due": 1782141674473,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "3lcb7wpuf5",
+          "type": "basic",
+          "front": "<div>Describe the following Spring Boot auto-configuration property:</div><div><br></div><div><code>spring.jpa.properties.hibernate.xxx=???</code></div>",
+          "back": "This is a placeholder for any Hibernate property that you want to set.",
+          "srs": {
+            "due": 1782141759617,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -565,6 +565,7 @@
         </div>
         <div class="progress-track"><div class="progress-fill" id="studyProgress"></div></div>
         <div class="study-count" id="studyCount">0 / 0</div>
+        <button class="btn btn-ghost btn-sm" id="studyEdit" title="Edit this card">✎ Edit</button>
     </div>
     <div class="study-stage" id="studyStage"></div>
     <div class="study-controls" id="studyControls"></div>
@@ -1585,7 +1586,7 @@
   }
 
   /* ----- Card editor ----- */
-  function openCardEditor(deckId, cardId, presetType) {
+  function openCardEditor(deckId, cardId, presetType, onSaved) {
     const deck = deckById(deckId);
     const editing = cardId ? deck.cards.find(c => c.id === cardId) : null;
     let type = editing ? editing.type : (presetType || "basic");
@@ -1665,6 +1666,7 @@
       }
       pruneDeckImages(deck);   // drop any images no longer referenced by a card
       closeModal(); render(); toast(editing ? "Card saved" : "Card added");
+      if (onSaved) onSaved();  // e.g. refresh the card being studied
     };
   }
 
@@ -1700,6 +1702,18 @@
     $("#study").classList.remove("open");
     $("#studyStage").innerHTML = ""; $("#studyControls").innerHTML = "";
     render();
+  }
+
+  // Edit the card currently being studied; on save, re-render it in place. The
+  // editor mutates the same card object that's in the study queue, so the updated
+  // content shows immediately (and is persisted) without disrupting the session.
+  function editCurrentStudyCard() {
+    if (!$("#study").classList.contains("open")) return;
+    const card = study.queue[study.index];
+    if (!card) return;
+    const deck = state.decks.find(d => d.cards.some(c => c.id === card.id));
+    if (!deck) { toast("This card's deck is no longer available."); return; }
+    openCardEditor(deck.id, card.id, null, () => { if ($("#study").classList.contains("open")) renderStudyCard(); });
   }
 
   function renderProgress() {
@@ -1910,6 +1924,7 @@
   /* keyboard shortcuts in study */
   document.addEventListener("keydown", e => {
     if (!$("#study").classList.contains("open")) return;
+    if ($("#modalRoot").classList.contains("open")) return; // editing over study — let the modal handle keys
     if (e.key === "Escape") { endStudy(); return; }
     const card = study.queue[study.index];
     if (!card) return;
@@ -1973,6 +1988,7 @@
   $("#newDeckBtn").onclick = () => openDeckEditor();
   $("#studyDueBtn").onclick = () => startStudy({ type: "all" }, "due");
   $("#studyExit").onclick = endStudy;
+  $("#studyEdit").onclick = editCurrentStudyCard;
   $("#exportBtn").onclick = exportData;
   $("#importBtn").onclick = () => $("#fileInput").click();
   $("#fileInput").onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); e.target.value = ""; };

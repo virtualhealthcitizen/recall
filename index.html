@@ -1768,14 +1768,54 @@
     return { node: container, inputs };
   }
 
+  // Forgiving answer matching: ignore case, surrounding/repeated whitespace,
+  // punctuation, and accents — so a learner isn't marked wrong for "el nucleo"
+  // vs "El nucleo!". Returns a normalized string for comparison.
+  function normalizeAnswer(s) {
+    return (s || "")
+      .normalize("NFD").replace(/[̀-ͯ]/g, "") // drop diacritics: "café" -> "cafe"
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, " ")                // punctuation/symbols -> space
+      .replace(/\s+/g, " ")                             // collapse whitespace
+      .trim();
+  }
+  // Levenshtein distance — used to forgive the occasional typo.
+  function editDistance(a, b) {
+    const m = a.length, n = b.length;
+    if (!m) return n; if (!n) return m;
+    let prev = Array.from({ length: n + 1 }, (_, j) => j);
+    for (let i = 1; i <= m; i++) {
+      const cur = [i];
+      for (let j = 1; j <= n; j++) {
+        cur[j] = a[i - 1] === b[j - 1] ? prev[j - 1] : 1 + Math.min(prev[j - 1], prev[j], cur[j - 1]);
+      }
+      prev = cur;
+    }
+    return prev[n];
+  }
+  // True if the typed value matches any accepted answer after normalization, with a
+  // small length-scaled typo tolerance (none for very short answers, to stay strict
+  // where a single letter changes the word).
+  function answerMatches(acceptedRaw, value) {
+    const v = normalizeAnswer(value);
+    if (!v) return false;
+    for (const ans of acceptedRaw) {
+      const a = normalizeAnswer(ans);
+      if (!a) continue;
+      if (a === v) return true;
+      const tol = a.length >= 8 ? 2 : a.length >= 5 ? 1 : 0;
+      if (tol && editDistance(a, v) <= tol) return true;
+    }
+    return false;
+  }
+
   function gradeFill(card) {
     if (study.phase !== "question") return;
     const inputs = study._fillInputs || [];
     let allOk = true; const misses = [];
     inputs.forEach(inp => {
-      const accepted = inp.getAttribute("data-answer").split("|").map(a => a.trim().toLowerCase());
-      const val = inp.value.trim().toLowerCase();
-      const ok = accepted.includes(val) && val !== "";
+      const accepted = inp.getAttribute("data-answer").split("|");
+      const ok = answerMatches(accepted, inp.value);
       inp.classList.toggle("correct", ok);
       inp.classList.toggle("incorrect", !ok);
       inp.disabled = true;

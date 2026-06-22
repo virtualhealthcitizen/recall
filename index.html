@@ -1992,11 +1992,50 @@
   /* =========================================================================
      Export / Import
      ========================================================================= */
-  function exportData() {
-    const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), ...state }, null, 2)], { type: "application/json" });
+  // Export: let the user browse and choose where to save via the File System Access
+  // API (Chromium). Falls back to a normal download where that API is unavailable or
+  // blocked (e.g. Firefox), in which case the browser's download settings decide the
+  // location — turn on Firefox's "Always ask you where to save files" for a prompt.
+  async function exportData() {
+    const json = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), ...state }, null, 2);
+    const suggestedName = `recall-flashcards-${new Date().toISOString().slice(0, 10)}.json`;
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: "Recall flashcards", accept: { "application/json": [".json"] } }],
+        });
+        const w = await handle.createWritable();
+        await w.write(json); await w.close();
+        toast("Exported");
+        return;
+      } catch (e) {
+        if (e && e.name === "AbortError") return;   // user cancelled the Save dialog
+        // any other error (e.g. unsupported on file://): fall through to the download
+      }
+    }
+    const blob = new Blob([json], { type: "application/json" });
     const a = el("a"); a.href = URL.createObjectURL(blob);
-    a.download = `recall-flashcards-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = suggestedName;
     a.click(); URL.revokeObjectURL(a.href); toast("Exported to file");
+  }
+  // Import: let the user browse and pick a file. Uses the File System Access API
+  // when available, otherwise the hidden <input type=file> (also a browse dialog).
+  async function importPick() {
+    if (window.showOpenFilePicker) {
+      try {
+        const [handle] = await window.showOpenFilePicker({
+          multiple: false,
+          types: [{ description: "Recall flashcards", accept: { "application/json": [".json"], "text/plain": [".json", ".txt"] } }],
+        });
+        importData(await handle.getFile());
+        return;
+      } catch (e) {
+        if (e && e.name === "AbortError") return;    // user cancelled
+        // fall through to the file input
+      }
+    }
+    $("#fileInput").click();
   }
   function importData(file) {
     const reader = new FileReader();
@@ -2023,7 +2062,7 @@
   $("#studyExit").onclick = endStudy;
   $("#studyEdit").onclick = editCurrentStudyCard;
   $("#exportBtn").onclick = exportData;
-  $("#importBtn").onclick = () => $("#fileInput").click();
+  $("#importBtn").onclick = importPick;
   $("#fileInput").onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); e.target.value = ""; };
   $("#searchInput").addEventListener("input", e => { ui.search = e.target.value; render(); });
   $("#themeBtn").onclick = () => {

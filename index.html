@@ -295,6 +295,13 @@
             display: block; white-space: pre-wrap; word-break: break-word; line-height: 1.55;
         }
         .face-content code, .fill-prompt code { font-size: .82em; }
+        /* Pasted / inserted images — keep them inside the card on every screen. */
+        .rte-area img, .face-content img, .fill-prompt img {
+            max-width: 100%; height: auto; max-height: 320px;
+            border-radius: 10px; display: inline-block; vertical-align: middle;
+            margin: 4px 2px; box-shadow: 0 1px 4px rgba(0,0,0,.12);
+        }
+        .rte-area img { cursor: default; }
         .face-content pre, .fill-prompt pre {
             font-family: var(--mono); font-size: 14px; font-weight: 400;
             max-height: 200px; overflow-y: auto; width: 100%;
@@ -666,7 +673,79 @@
   }
   function plainText(html) { const d = el("div", null, html || ""); return (d.textContent || "").trim(); }
   function fillPreview(html) {
-    return (html || "").replace(/<span class="blank"[^>]*>.*?<\/span>/g, '<span class="blank-mini">____</span>');
+    return (html || "")
+      .replace(/<span class="blank"[^>]*>.*?<\/span>/g, '<span class="blank-mini">____</span>')
+      .replace(/<img[^>]*>/gi, "🖼");
+  }
+
+  /* ----- Images: each deck owns its image store (id -> data URL). Cards keep only
+     a lightweight <img data-img-id="…"> reference; the heavy data lives once, per
+     deck, and is resolved to a real src at render time. Supports PNG/JP-G/GIF/etc. */
+  function deckImages(deck) { if (!deck.images) deck.images = {}; return deck.images; }
+  function addDeckImage(deck, dataURL) { const id = uid(); deckImages(deck)[id] = dataURL; return id; }
+  function imageSrcById(id) {
+    for (const d of state.decks) { if (d.images && d.images[id]) return d.images[id]; }
+    return "";
+  }
+  function hydrateImages(root) {
+    root.querySelectorAll("img[data-img-id]").forEach(img => {
+      const src = imageSrcById(img.getAttribute("data-img-id"));
+      if (src) img.src = src; else img.removeAttribute("src");
+    });
+  }
+  function readFileAsDataURL(file) {
+    return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+  }
+  function makeImgEl(id, src) {
+    const img = document.createElement("img");
+    img.className = "rte-img"; img.setAttribute("data-img-id", id); img.alt = "image";
+    if (src) img.src = src;
+    return img;
+  }
+  // Drop deck images no longer referenced by any of its cards (e.g. removed/cancelled).
+  function pruneDeckImages(deck) {
+    if (!deck.images) return;
+    const used = new Set();
+    deck.cards.forEach(c => {
+      const html = (c.front || "") + (c.back || "") + (c.prompt || "");
+      const re = /data-img-id="([^"]+)"/g; let m;
+      while ((m = re.exec(html))) used.add(m[1]);
+    });
+    Object.keys(deck.images).forEach(id => { if (!used.has(id)) delete deck.images[id]; });
+  }
+  // Persist after adding an image; warn once if storage (e.g. quota) can't keep it.
+  function persistImage() {
+    const wasOK = storageOK; persist();
+    if (wasOK && !storageOK) toast("Image added for this session — storage is full, so it may not be saved permanently.");
+  }
+  function insertImageAt(area, img, range) {
+    area.focus();
+    let r = (range && area.contains(range.commonAncestorContainer)) ? range.cloneRange() : null;
+    if (!r) { r = document.createRange(); r.selectNodeContents(area); r.collapse(false); }
+    r.collapse(false);
+    r.insertNode(img);
+    const sel = window.getSelection();
+    const after = document.createRange(); after.setStartAfter(img); after.collapse(true);
+    sel.removeAllRanges(); sel.addRange(after);
+  }
+  // Toolbar "insert image" — file picker into the given editor/deck.
+  function pickImageInto(area, deck, range) {
+    const input = document.createElement("input");
+    input.type = "file"; input.accept = "image/*"; input.multiple = true; input.style.display = "none";
+    document.body.appendChild(input);
+    input.onchange = async () => {
+      const files = [...input.files].filter(f => /^image\//.test(f.type));
+      let r = range;
+      for (const file of files) {
+        const dataURL = await readFileAsDataURL(file);
+        const img = makeImgEl(addDeckImage(deck, dataURL), dataURL);
+        insertImageAt(area, img, r);
+        r = document.createRange(); r.setStartAfter(img); r.collapse(true);
+        persistImage();
+      }
+      input.remove();
+    };
+    input.click();
   }
 
   function subjectById(id) { return state.subjects.find(s => s.id === id); }
@@ -902,7 +981,7 @@
       const row = el("div", "card-row");
       let preview;
       if (card.type === "basic") {
-        preview = `<div class="q">${sanitize(card.front)}</div><div class="a">${plainText(card.back)}</div>`;
+        preview = `<div class="q">${sanitize(card.front).replace(/<img[^>]*>/gi, "🖼")}</div><div class="a">${plainText(card.back) || (/<img/i.test(card.back) ? "🖼 image" : "")}</div>`;
       } else {
         preview = `<div class="q">${fillPreview(card.prompt)}</div><div class="a">fill-in-the-blank</div>`;
       }
@@ -915,7 +994,7 @@
       </div>`;
       row.querySelector("[data-edit]").onclick = () => openCardEditor(deck.id, card.id);
       row.querySelector("[data-del]").onclick = () => {
-        deck.cards = deck.cards.filter(c => c.id !== card.id); render(); toast("Card deleted");
+        deck.cards = deck.cards.filter(c => c.id !== card.id); pruneDeckImages(deck); render(); toast("Card deleted");
       };
       list.appendChild(row);
     });
@@ -1024,7 +1103,7 @@
   }
 
   /* ----- Rich text editor ----- */
-  function buildRTE(initialHTML, placeholder, withBlank) {
+  function buildRTE(initialHTML, placeholder, withBlank, imageDeck) {
     const wrap = el("div", "rte");
     const bar = el("div", "rte-bar");
     const cmds = [
@@ -1041,6 +1120,26 @@
     // Blanks loaded for editing need the same caret guards as freshly-made ones,
     // so typing beside them never leaks the yellow styling onto the new text.
     if (withBlank) area.querySelectorAll(".blank").forEach(guardBlank);
+    // Resolve <img data-img-id> references to real sources for display.
+    hydrateImages(area);
+
+    // Paste images straight from the clipboard (e.g. copied from a web browser).
+    if (imageDeck) area.addEventListener("paste", e => {
+      const files = e.clipboardData ? [...e.clipboardData.files].filter(f => /^image\//.test(f.type)) : [];
+      if (!files.length) return;            // not an image paste — let text paste through
+      e.preventDefault();
+      const sel = window.getSelection();
+      let r = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+      (async () => {
+        for (const file of files) {
+          const dataURL = await readFileAsDataURL(file);
+          const img = makeImgEl(addDeckImage(imageDeck, dataURL), dataURL);
+          insertImageAt(area, img, r);
+          r = document.createRange(); r.setStartAfter(img); r.collapse(true);
+          persistImage();
+        }
+      })();
+    });
 
     // ---- Undo / redo. The browser's native undo stack can't track the editor's
     // direct DOM edits (blanks, inline code, code blocks, seeded lists), so we keep
@@ -1123,6 +1222,18 @@
     blockBtn.onmousedown = e => e.preventDefault();
     blockBtn.onclick = () => { area.focus(); insertCodeBlock(area); };
     bar.appendChild(blockBtn);
+    // Insert image (file picker); images can also be pasted from the clipboard.
+    if (imageDeck) {
+      bar.appendChild(el("span", "sep"));
+      const imgBtn = el("button", null, "🖼"); imgBtn.type = "button"; imgBtn.title = "Insert image (or paste from clipboard)";
+      imgBtn.onmousedown = e => e.preventDefault();
+      imgBtn.onclick = () => {
+        const sel = window.getSelection();
+        const r = sel.rangeCount && area.contains(sel.getRangeAt(0).commonAncestorContainer) ? sel.getRangeAt(0).cloneRange() : null;
+        pickImageInto(area, imageDeck, r);
+      };
+      bar.appendChild(imgBtn);
+    }
     // Code font-size selector
     const sizeWrap = el("div", "code-size-wrap");
     sizeWrap.innerHTML = `<label>px</label>`;
@@ -1180,7 +1291,12 @@
     });
 
     wrap.appendChild(bar); wrap.appendChild(area);
-    wrap._getHTML = () => sanitize(area.innerHTML).trim();
+    wrap._getHTML = () => {
+      // Store only the lightweight image reference; the data URL lives in the deck.
+      const clone = area.cloneNode(true);
+      clone.querySelectorAll("img[data-img-id]").forEach(img => img.removeAttribute("src"));
+      return sanitize(clone.innerHTML).trim();
+    };
     wrap._area = area;
     return wrap;
   }
@@ -1443,14 +1559,14 @@
       body.innerHTML = "";
       if (type === "basic") {
         const f1 = el("div", "field"); f1.appendChild(el("label", null, "Front (question)"));
-        frontRTE = buildRTE(editing && editing.type === "basic" ? editing.front : "", "The prompt you'll see first…", false);
+        frontRTE = buildRTE(editing && editing.type === "basic" ? editing.front : "", "The prompt you'll see first…", false, deck);
         f1.appendChild(frontRTE); body.appendChild(f1);
         const f2 = el("div", "field"); f2.appendChild(el("label", null, "Back (answer)"));
-        backRTE = buildRTE(editing && editing.type === "basic" ? editing.back : "", "The answer, revealed on flip…", false);
+        backRTE = buildRTE(editing && editing.type === "basic" ? editing.back : "", "The answer, revealed on flip…", false, deck);
         f2.appendChild(backRTE); body.appendChild(f2);
       } else {
         const f = el("div", "field"); f.appendChild(el("label", null, "Sentence"));
-        fillRTE = buildRTE(editing && editing.type === "fill" ? editing.prompt : "", "Type a sentence, then select a word and press Blank…", true);
+        fillRTE = buildRTE(editing && editing.type === "fill" ? editing.prompt : "", "Type a sentence, then select a word and press Blank…", true, deck);
         f.appendChild(fillRTE); body.appendChild(f);
         body.appendChild(el("div", "hint",
           `Select any word and hit <b>▭ Blank</b> (or <b>Ctrl+Shift+B</b>) to hide it. For alternatives, select text like <code>color|colour</code> before blanking — any of them counts as correct. Click a blank to remove it.`));
@@ -1481,17 +1597,19 @@
     n.querySelector("#cardSave").onclick = () => {
       if (type === "basic") {
         const front = frontRTE._getHTML(), back = backRTE._getHTML();
-        if (!plainText(front)) { toast("Add a front/question"); return; }
-        if (!plainText(back)) { toast("Add a back/answer"); return; }
+        const has = h => plainText(h) || /<img/i.test(h);   // text or an image counts
+        if (!has(front)) { toast("Add a front/question"); return; }
+        if (!has(back)) { toast("Add a back/answer"); return; }
         if (editing) { editing.front = front; editing.back = back; }
         else deck.cards.push({ id: uid(), type: "basic", front, back, srs: { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 } });
       } else {
         const prompt = fillRTE._getHTML();
-        if (!plainText(prompt)) { toast("Write a sentence"); return; }
+        if (!plainText(prompt) && !/<img/i.test(prompt)) { toast("Write a sentence"); return; }
         if (!/class="blank"/.test(prompt)) { toast("Mark at least one blank"); return; }
         if (editing) editing.prompt = prompt;
         else deck.cards.push({ id: uid(), type: "fill", prompt, srs: { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 } });
       }
+      pruneDeckImages(deck);   // drop any images no longer referenced by a card
       closeModal(); render(); toast(editing ? "Card saved" : "Card added");
     };
   }
@@ -1557,6 +1675,7 @@
         <div class="face front"><div class="face-label">Question</div><div class="face-content">${sanitize(card.front)}</div><div class="tap-hint">tap or press Space to flip</div></div>
         <div class="face back"><div class="face-label">Answer</div><div class="face-content small">${sanitize(card.back)}</div></div>
       </div>`;
+      hydrateImages(fc);
       fc.onclick = () => { if (study.phase === "question") flipCard(); };
       wrap.appendChild(fc);
       stage.appendChild(wrap);
@@ -1581,6 +1700,7 @@
   function buildFillPrompt(html) {
     const container = el("div", "fill-prompt");
     container.innerHTML = sanitize(html);
+    hydrateImages(container);
     const inputs = [];
     container.querySelectorAll(".blank").forEach(span => {
       const answer = span.getAttribute("data-answer") || span.textContent;

@@ -1545,6 +1545,7 @@
     if (study.index >= study.queue.length) return renderSessionDone();
     const card = study.queue[study.index];
     study.phase = "question";
+    study._activeInput = null;
 
     const wrap = el("div", "card-wrap");
     wrap.appendChild(el("div", "stack-layer l2"));
@@ -1570,6 +1571,7 @@
       stage.appendChild(wrap);
       setTimeout(() => promptHTML.inputs[0] && promptHTML.inputs[0].focus(), 30);
       study._fillInputs = promptHTML.inputs;
+      study._activeInput = promptHTML.inputs[0] || null;
       const check = bigAction("Check answer", () => gradeFill(card));
       controls.appendChild(check);
       promptHTML.inputs.forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); gradeFill(card); } }));
@@ -1702,6 +1704,27 @@
     } else if (study.phase === "answer") {
       if (["1", "2", "3", "4"].includes(e.key)) { e.preventDefault(); rateCard(card, parseInt(e.key, 10) - 1); }
     }
+  });
+
+  // Remember the blank being edited the instant the window loses focus — element
+  // blur/focus events don't fire on a window switch, but the input is still the
+  // activeElement at that moment.
+  window.addEventListener("blur", () => {
+    const ae = document.activeElement;
+    if (ae && ae.classList && ae.classList.contains("fill-input")) study._activeInput = ae;
+  });
+  // Returning from another window/tab often drops focus from the blank the user was
+  // filling in. Put it back where they left off (caret at the end of the value).
+  window.addEventListener("focus", () => {
+    if (!$("#study").classList.contains("open") || study.phase !== "question") return;
+    const inp = study._activeInput;
+    if (!inp || !inp.isConnected || inp.disabled) return;
+    setTimeout(() => {
+      const ae = document.activeElement;
+      if (ae && ae.classList && ae.classList.contains("fill-input")) return; // browser already restored it
+      inp.focus();
+      const n = inp.value.length; try { inp.setSelectionRange(n, n); } catch (_) {}
+    }, 0);
   });
 
   /* =========================================================================

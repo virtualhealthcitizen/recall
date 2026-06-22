@@ -1239,9 +1239,13 @@
   }
 
   function isEmptyEditable(area) {
-    // A contentEditable that holds no real content (browsers leave it as "" or
-    // a lone <br>, sometimes with a zero-width guard node).
-    return area.innerHTML.replace(/[​\s]/g, "").replace(/<br\/?>/gi, "") === "";
+    // True when a contentEditable holds no real content. Strips zero-width/space,
+    // <br> with ANY attributes (Firefox leaves a bogus <br type="_moz"> placeholder
+    // in a focused-but-empty field), and the empty <div>/<p> wrappers browsers add.
+    let h = area.innerHTML.replace(/[​\s]/g, "").replace(/<br[^>]*>/gi, "");
+    let prev;
+    do { prev = h; h = h.replace(/<(div|p)[^>]*><\/\1>/gi, ""); } while (h !== prev);
+    return h === "";
   }
 
   // ---- Selection <-> character-offset (so a caret survives an innerHTML swap
@@ -1272,6 +1276,14 @@
 
   function runEditCommand(area, cmd) {
     area.focus();
+    // Guarantee the caret is inside THIS field before acting, so a command never
+    // lands in another field (e.g. clicking the back's list button while the caret
+    // is still in the front — some browsers don't move it into an empty field).
+    const sel0 = window.getSelection();
+    if (!sel0.rangeCount || !area.contains(sel0.getRangeAt(0).commonAncestorContainer)) {
+      const r0 = document.createRange(); r0.selectNodeContents(area); r0.collapse(false);
+      sel0.removeAllRanges(); sel0.addRange(r0);
+    }
     // Firefox treats insertUnordered/OrderedList as a no-op on a truly empty
     // editor, so the first bullet never appears. Seed the list ourselves.
     if ((cmd === "insertUnorderedList" || cmd === "insertOrderedList") && isEmptyEditable(area)) {

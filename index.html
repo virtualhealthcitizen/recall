@@ -243,6 +243,24 @@
         .modal-head p { color: var(--ink-soft); font-size: 13.5px; margin: 4px 0 0; }
         .modal-body { padding: 18px 24px; overflow-y: auto; }
         .modal-foot { padding: 14px 24px 20px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--line); }
+        /* Resizable card editor: drag the bottom-right corner to adjust the window.
+           Bounds keep it on-screen; the editors flex to fill the chosen height. */
+        .modal.resizable {
+            width: 660px; max-width: 96vw; min-width: 320px;
+            height: auto; max-height: 92vh; min-height: 340px;
+            resize: both; overflow: hidden;
+        }
+        .modal.resizable > div { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        .modal.resizable .modal-head, .modal.resizable .modal-foot { flex: 0 0 auto; }
+        .modal.resizable .modal-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        .modal.resizable .field { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        .modal.resizable .field label, .modal.resizable .hint { flex: 0 0 auto; }
+        .modal.resizable .rte { flex: 1 1 auto; min-height: 96px; display: flex; flex-direction: column; }
+        .modal.resizable .rte-bar { flex: 0 0 auto; }
+        .modal.resizable .rte-area { flex: 1 1 auto; max-height: none; }
+        @media (max-width: 560px) {
+            .modal.resizable { width: 96vw; min-width: 0; resize: vertical; }
+        }
         @keyframes fade { from { opacity: 0; } }
         @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } }
 
@@ -1055,11 +1073,24 @@
   /* =========================================================================
      Modals
      ========================================================================= */
-  function openModal(node) {
+  const EDITOR_SIZE_KEY = "recall.editorSize.v1";
+  function openModal(node, opts = {}) {
     const m = $("#modal"); m.innerHTML = ""; m.appendChild(node);
+    const resizable = !!opts.resizable;
+    m.classList.toggle("resizable", resizable);
+    m.style.width = ""; m.style.height = "";
+    if (resizable) { // restore the user's last chosen size (bounded by CSS max/min)
+      try { const s = JSON.parse(localStorage.getItem(EDITOR_SIZE_KEY) || "null"); if (s && s.w) { m.style.width = s.w + "px"; m.style.height = s.h + "px"; } } catch (e) {}
+    }
     $("#modalRoot").classList.add("open");
   }
-  function closeModal() { $("#modalRoot").classList.remove("open"); }
+  function closeModal() {
+    const m = $("#modal");
+    if (m.classList.contains("resizable") && m.style.width) { // remember a size the user dragged to
+      try { const r = m.getBoundingClientRect(); localStorage.setItem(EDITOR_SIZE_KEY, JSON.stringify({ w: Math.round(r.width), h: Math.round(r.height) })); } catch (e) {}
+    }
+    $("#modalRoot").classList.remove("open");
+  }
   $("#modalRoot").addEventListener("click", e => { if (e.target.hasAttribute("data-close")) closeModal(); });
 
   function confirmModal(title, body, onYes) {
@@ -1605,7 +1636,7 @@
       <button class="btn" data-close>Cancel</button>
       <button class="btn btn-primary" id="cardSave">${editing ? "Save changes" : "Add card"}</button>
     </div>`;
-    openModal(n);
+    openModal(n, { resizable: true });
 
     const body = n.querySelector("#cardBody");
     let frontRTE, backRTE, fillRTE;

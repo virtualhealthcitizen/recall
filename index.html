@@ -1761,6 +1761,7 @@
       study._activeInput = promptHTML.inputs[0] || null;
       const check = bigAction("Check answer", () => gradeFill(card));
       controls.appendChild(check);
+      controls.appendChild(el("div", "study-count", "Press Enter to check."));
       promptHTML.inputs.forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); gradeFill(card); } }));
     }
   }
@@ -1930,6 +1931,7 @@
     if (!card) return;
     if (study.phase === "question") {
       if (card.type === "basic" && e.code === "Space") { e.preventDefault(); flipCard(); }
+      else if (card.type === "fill" && e.key === "Enter") { e.preventDefault(); gradeFill(card); } // Space types into the blank, so Enter checks
     } else if (study.phase === "answer") {
       if (["1", "2", "3", "4"].includes(e.key)) { e.preventDefault(); rateCard(card, parseInt(e.key, 10) - 1); }
     }

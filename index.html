@@ -1029,8 +1029,8 @@
 
     const addBar = el("div", null);
     addBar.style.cssText = "display:flex;gap:8px;margin-bottom:16px";
-    addBar.innerHTML = `<button class="btn btn-primary btn-sm" id="addBasic">＋ Basic card</button>
-                      <button class="btn btn-sm" id="addFill">＋ Fill-in-the-blank</button>`;
+    addBar.innerHTML = `<button class="btn btn-primary btn-sm" id="addBasic" title="New basic card (B)">＋ Basic card</button>
+                      <button class="btn btn-sm" id="addFill" title="New fill-in-the-blank card (F)">＋ Fill-in-the-blank</button>`;
     v.appendChild(addBar);
     $("#addBasic").onclick = () => openCardEditor(deck.id, null, "basic");
     $("#addFill").onclick = () => openCardEditor(deck.id, null, "fill");
@@ -2098,6 +2098,17 @@
   $("#importBtn").onclick = importPick;
   $("#fileInput").onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); e.target.value = ""; };
   $("#searchInput").addEventListener("input", e => { ui.search = e.target.value; render(); });
+  // Shortcuts (when viewing a deck): B = new basic card, F = new fill-in-the-blank.
+  document.addEventListener("keydown", e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if ($("#study").classList.contains("open") || $("#modalRoot").classList.contains("open")) return;
+    const ae = document.activeElement;
+    if (ae && (ae.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) return; // don't fire while typing
+    if (ui.view !== "deck" || !deckById(ui.deckId)) return; // only where the buttons live
+    const k = e.key.toLowerCase();
+    if (k === "b") { e.preventDefault(); openCardEditor(ui.deckId, null, "basic"); }
+    else if (k === "f") { e.preventDefault(); openCardEditor(ui.deckId, null, "fill"); }
+  });
   $("#themeBtn").onclick = () => {
     const root = document.documentElement;
     root.setAttribute("data-theme", root.getAttribute("data-theme") === "dark" ? "light" : "dark");

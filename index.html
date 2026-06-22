@@ -621,37 +621,87 @@
       },
     ];
   }
-  /* ----- Persistence: auto-save to localStorage when it's available, with a
-     silent in-memory fallback for sandboxes (like the artifact viewer) where
-     browser storage is blocked. Nothing changes for the user except that a
-     downloaded, standalone copy now remembers everything between runs. ----- */
+  /* ----- Persistence: decks live in the browser's own internal storage and are
+     restored automatically every time the app opens — no manual import needed.
+     IndexedDB is the primary store (ample room, handles images/GIFs); localStorage
+     is a best-effort synchronous cache / fallback. The JSON Export/Import feature is
+     unchanged and still works for backups and moving data between devices. ----- */
   const STORAGE_KEY = "recall.flashcards.v1";
-  function storageAvailable() {
-    try { const k = "__recall_test__"; window.localStorage.setItem(k, "1"); window.localStorage.removeItem(k); return true; }
-    catch (e) { return false; }
+  const IDB_NAME = "recall.flashcards", IDB_STORE = "state", IDB_KEY = "current";
+  let idbOK = typeof indexedDB !== "undefined";
+  let lsOK = (() => { try { const k = "__recall_test__"; localStorage.setItem(k, "1"); localStorage.removeItem(k); return true; } catch (e) { return false; } })();
+  let lsTooBig = false, booted = false, saveTimer = null;
+  function canPersist() { return idbOK || lsOK; }
+
+  function idbOpen() {
+    return new Promise((resolve, reject) => {
+      let req; try { req = indexedDB.open(IDB_NAME, 1); } catch (e) { return reject(e); }
+      req.onupgradeneeded = () => { const db = req.result; if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      req.onblocked = () => reject(new Error("blocked"));
+    });
   }
-  let storageOK = storageAvailable();
-  function persist() {
-    if (!storageOK) return;
-    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, subjects: state.subjects, decks: state.decks })); }
-    catch (e) { storageOK = false; } // e.g. quota exceeded — degrade gracefully
+  function idbGet() {
+    return idbOpen().then(db => new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE, "readonly");
+      const r = tx.objectStore(IDB_STORE).get(IDB_KEY);
+      r.onsuccess = () => { db.close(); resolve(r.result ?? null); };
+      r.onerror = () => { db.close(); reject(r.error); };
+    }));
   }
-  function loadPersisted() {
-    if (!storageOK) return null;
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      const data = JSON.parse(raw);
-      if (!data || !Array.isArray(data.decks)) return null;
-      data.decks.forEach(d => (d.cards || []).forEach(c => { if (!c.srs) c.srs = { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 }; }));
-      return { subjects: Array.isArray(data.subjects) ? data.subjects : [], decks: data.decks };
-    } catch (e) { return null; }
+  function idbPut(value) {
+    return idbOpen().then(db => new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE, "readwrite");
+      tx.objectStore(IDB_STORE).put(value, IDB_KEY);
+      tx.oncomplete = () => { db.close(); resolve(true); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+      tx.onabort = () => { db.close(); reject(tx.error); };
+    }));
   }
 
-  /* On startup, restore saved data if there is any; otherwise seed the samples. */
-  const _persisted = loadPersisted();
-  if (_persisted) state = _persisted;
-  else { seed(); persist(); }
+  function snapshot() { return { version: 1, savedAt: Date.now(), subjects: state.subjects, decks: state.decks }; }
+  function normalizeLoaded(data) {
+    if (!data || !Array.isArray(data.decks)) return null;
+    data.decks.forEach(d => (d.cards || []).forEach(c => { if (!c.srs) c.srs = { due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 }; }));
+    return { subjects: Array.isArray(data.subjects) ? data.subjects : [], decks: data.decks };
+  }
+  function loadLocal() {
+    if (!lsOK) return null;
+    try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+  }
+  function writeLocal(snap) {
+    if (!lsOK || lsTooBig) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snap)); } catch (e) { lsTooBig = true; } // too big -> IndexedDB only
+  }
+  function saveNow() {
+    saveTimer = null;
+    const snap = snapshot();
+    if (idbOK) idbPut(snap).catch(() => { idbOK = false; });
+    writeLocal(snap); // synchronous cache for instant next-open restore (small data) + fallback
+  }
+  // Public auto-save hook; coalesces rapid calls. A no-op until the initial load
+  // finishes, so an early render can't overwrite stored data before we've read it.
+  function persist() { if (!booted) return; clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 200); }
+  function flushPersist() { if (!booted) return; clearTimeout(saveTimer); saveNow(); }
+
+  /* First paint uses any synchronous localStorage data for an instant restore; the
+     authoritative IndexedDB read (initPersistence, below) runs right after and reconciles. */
+  const _local = loadLocal();
+  if (normalizeLoaded(_local)) state = normalizeLoaded(_local);
+
+  async function initPersistence() {
+    let idbData = null;
+    if (idbOK) { try { idbData = await idbGet(); } catch (e) { idbOK = false; } }
+    // Choose the freshest valid source (IndexedDB vs. the synchronous localStorage read).
+    let chosen = null;
+    for (const s of [idbData, _local]) if (normalizeLoaded(s) && (!chosen || (s.savedAt || 0) > (chosen.savedAt || 0))) chosen = s;
+    if (chosen) state = normalizeLoaded(chosen);
+    else if (!state.decks.length) seed();   // nothing stored anywhere -> sample decks
+    booted = true;
+    render();
+    flushPersist();   // migrate old localStorage -> IndexedDB, or persist the seeded samples
+  }
 
   /* ----- Small helpers ----- */
   const $ = (s, r = document) => r.querySelector(s);
@@ -715,8 +765,8 @@
   }
   // Persist after adding an image; warn once if storage (e.g. quota) can't keep it.
   function persistImage() {
-    const wasOK = storageOK; persist();
-    if (wasOK && !storageOK) toast("Image added for this session — storage is full, so it may not be saved permanently.");
+    persist();
+    if (!canPersist()) toast("Storage is unavailable here — images and changes won't be kept after you close the app. Use Export for a backup.");
   }
   function insertImageAt(area, img, range) {
     area.focus();
@@ -870,7 +920,7 @@
       <p class="page-sub">${state.decks.length} deck${state.decks.length === 1 ? "" : "s"} across ${state.subjects.length} subject${state.subjects.length === 1 ? "" : "s"}.</p></div>`));
 
     v.appendChild(el("div", "session-banner",
-      storageOK
+      canPersist()
         ? `<span>●</span><span>Saved automatically in this browser. Use <b>Export</b> for a backup you can move between devices.</span>`
         : `<span>●</span><span>Your data lives in this session only. Use <b>Export</b> to save a copy and <b>Import</b> to restore it.</span>`));
 
@@ -1908,9 +1958,14 @@
 
   // expose for inline onclick handlers
   window.openDeckEditor = openDeckEditor;
-  window.addEventListener("beforeunload", persist); // final save before the tab closes
+  // Flush pending saves when leaving / backgrounding the app (more reliable than
+  // beforeunload alone, especially on mobile).
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushPersist(); });
+  window.addEventListener("pagehide", flushPersist);
+  window.addEventListener("beforeunload", flushPersist);
 
-  render();
+  render();                 // instant first paint from the synchronous cache (if any)
+  initPersistence();        // then load authoritatively from internal storage
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-06-23T23:02:18.592Z",
+  "exportedAt": "2026-06-23T23:31:56.046Z",
   "subjects": [
     {
       "id": "nn57ngr7cw",
@@ -450,6 +450,3281 @@
           "prompt": "Seven times eight is <span class=\"blank\" data-answer=\"56\">56</span>.",
           "srs": {
             "due": 1782255738592,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "swyh7nommu",
+      "name": "Test Deck 01",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #1 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "k4w40oummu",
+          "type": "basic",
+          "front": "Test deck 1 — front of card 1",
+          "back": "<b>Back 1.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "y8dtgirmmu",
+          "type": "fill",
+          "prompt": "Test deck 1 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans1-2\">ans1-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "167j7p5mmu",
+          "type": "basic",
+          "front": "Test deck 1 — front of card 3",
+          "back": "<b>Back 1.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "pxwcdn0mmu",
+          "type": "fill",
+          "prompt": "Test deck 1 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans1-4\">ans1-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "a6p3c9mmmu",
+      "name": "Test Deck 02",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #2 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "zw7xhdhmmu",
+          "type": "basic",
+          "front": "Test deck 2 — front of card 1",
+          "back": "<b>Back 2.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "w3evk6tmmu",
+          "type": "fill",
+          "prompt": "Test deck 2 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans2-2\">ans2-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "tvbxoi1mmu",
+          "type": "basic",
+          "front": "Test deck 2 — front of card 3",
+          "back": "<b>Back 2.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "onmvxlammu",
+          "type": "fill",
+          "prompt": "Test deck 2 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans2-4\">ans2-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "vokam4kmmu",
+          "type": "basic",
+          "front": "Test deck 2 — front of card 5",
+          "back": "<b>Back 2.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "pkd4hfxmmu",
+      "name": "Test Deck 03",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #3 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "dvjbs0mmmu",
+          "type": "basic",
+          "front": "Test deck 3 — front of card 1",
+          "back": "<b>Back 3.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "s28l5m3mmu",
+          "type": "fill",
+          "prompt": "Test deck 3 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans3-2\">ans3-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "km4i1f0mmu",
+          "type": "basic",
+          "front": "Test deck 3 — front of card 3",
+          "back": "<b>Back 3.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "758qacammu",
+          "type": "fill",
+          "prompt": "Test deck 3 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans3-4\">ans3-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "y5rlsqummu",
+          "type": "basic",
+          "front": "Test deck 3 — front of card 5",
+          "back": "<b>Back 3.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "gxp0v48mmu",
+          "type": "fill",
+          "prompt": "Test deck 3 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans3-6\">ans3-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "dbwfo31mmu",
+      "name": "Test Deck 04",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #4 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "p6hs5mtmmu",
+          "type": "basic",
+          "front": "Test deck 4 — front of card 1",
+          "back": "<b>Back 4.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "63njcynmmu",
+          "type": "fill",
+          "prompt": "Test deck 4 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans4-2\">ans4-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "l2xjkpcmmu",
+          "type": "basic",
+          "front": "Test deck 4 — front of card 3",
+          "back": "<b>Back 4.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "dodj9a7mmu",
+      "name": "Test Deck 05",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #5 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "vwdfzmommu",
+          "type": "basic",
+          "front": "Test deck 5 — front of card 1",
+          "back": "<b>Back 5.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "redlnyfmmu",
+          "type": "fill",
+          "prompt": "Test deck 5 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans5-2\">ans5-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "kzmhvqtmmu",
+          "type": "basic",
+          "front": "Test deck 5 — front of card 3",
+          "back": "<b>Back 5.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "wgjpwj5mmu",
+          "type": "fill",
+          "prompt": "Test deck 5 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans5-4\">ans5-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "gs2w1y5mmu",
+      "name": "Test Deck 06",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #6 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "1tmqrwqmmu",
+          "type": "basic",
+          "front": "Test deck 6 — front of card 1",
+          "back": "<b>Back 6.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "aznx2hmmmu",
+          "type": "fill",
+          "prompt": "Test deck 6 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans6-2\">ans6-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "rs5fn0ummu",
+          "type": "basic",
+          "front": "Test deck 6 — front of card 3",
+          "back": "<b>Back 6.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "254rbcmmmu",
+          "type": "fill",
+          "prompt": "Test deck 6 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans6-4\">ans6-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "70ytdz4mmu",
+          "type": "basic",
+          "front": "Test deck 6 — front of card 5",
+          "back": "<b>Back 6.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "f5pjkqsmmu",
+      "name": "Test Deck 07",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #7 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "v2wt5vkmmu",
+          "type": "basic",
+          "front": "Test deck 7 — front of card 1",
+          "back": "<b>Back 7.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zpvlvvgmmu",
+          "type": "fill",
+          "prompt": "Test deck 7 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans7-2\">ans7-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "twk7ak9mmu",
+          "type": "basic",
+          "front": "Test deck 7 — front of card 3",
+          "back": "<b>Back 7.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "67x3trnmmu",
+          "type": "fill",
+          "prompt": "Test deck 7 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans7-4\">ans7-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "vy26s9tmmu",
+          "type": "basic",
+          "front": "Test deck 7 — front of card 5",
+          "back": "<b>Back 7.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "trpbnrommu",
+          "type": "fill",
+          "prompt": "Test deck 7 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans7-6\">ans7-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "6uvsjvqmmu",
+      "name": "Test Deck 08",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #8 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "owd783pmmu",
+          "type": "basic",
+          "front": "Test deck 8 — front of card 1",
+          "back": "<b>Back 8.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "omaztvqmmu",
+          "type": "fill",
+          "prompt": "Test deck 8 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans8-2\">ans8-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "qro3rvammu",
+          "type": "basic",
+          "front": "Test deck 8 — front of card 3",
+          "back": "<b>Back 8.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "s21wlsfmmu",
+      "name": "Test Deck 09",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #9 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "hxjwu8nmmu",
+          "type": "basic",
+          "front": "Test deck 9 — front of card 1",
+          "back": "<b>Back 9.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "244sqismmu",
+          "type": "fill",
+          "prompt": "Test deck 9 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans9-2\">ans9-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "akfcqcrmmu",
+          "type": "basic",
+          "front": "Test deck 9 — front of card 3",
+          "back": "<b>Back 9.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zfkyayhmmu",
+          "type": "fill",
+          "prompt": "Test deck 9 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans9-4\">ans9-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "3k5fyftmmu",
+      "name": "Test Deck 10",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #10 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "yve33urmmu",
+          "type": "basic",
+          "front": "Test deck 10 — front of card 1",
+          "back": "<b>Back 10.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "wwin4w5mmu",
+          "type": "fill",
+          "prompt": "Test deck 10 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans10-2\">ans10-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "busv8l3mmu",
+          "type": "basic",
+          "front": "Test deck 10 — front of card 3",
+          "back": "<b>Back 10.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "5r1fl3ymmu",
+          "type": "fill",
+          "prompt": "Test deck 10 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans10-4\">ans10-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "t04n10rmmu",
+          "type": "basic",
+          "front": "Test deck 10 — front of card 5",
+          "back": "<b>Back 10.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "j78e99vmmu",
+      "name": "Test Deck 11",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #11 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "ovyaroxmmu",
+          "type": "basic",
+          "front": "Test deck 11 — front of card 1",
+          "back": "<b>Back 11.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "t2q4rc4mmu",
+          "type": "fill",
+          "prompt": "Test deck 11 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans11-2\">ans11-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "22zxrhymmu",
+          "type": "basic",
+          "front": "Test deck 11 — front of card 3",
+          "back": "<b>Back 11.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "dtftptemmu",
+          "type": "fill",
+          "prompt": "Test deck 11 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans11-4\">ans11-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "xi0r70zmmu",
+          "type": "basic",
+          "front": "Test deck 11 — front of card 5",
+          "back": "<b>Back 11.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "rwc5ipzmmu",
+          "type": "fill",
+          "prompt": "Test deck 11 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans11-6\">ans11-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "xova2c2mmu",
+      "name": "Test Deck 12",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #12 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "j5ocz76mmu",
+          "type": "basic",
+          "front": "Test deck 12 — front of card 1",
+          "back": "<b>Back 12.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "atrfv6mmmu",
+          "type": "fill",
+          "prompt": "Test deck 12 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans12-2\">ans12-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "kco4r9ammu",
+          "type": "basic",
+          "front": "Test deck 12 — front of card 3",
+          "back": "<b>Back 12.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "tbof561mmu",
+      "name": "Test Deck 13",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #13 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "6dmtohhmmu",
+          "type": "basic",
+          "front": "Test deck 13 — front of card 1",
+          "back": "<b>Back 13.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "7utn7zqmmu",
+          "type": "fill",
+          "prompt": "Test deck 13 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans13-2\">ans13-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "oruem88mmu",
+          "type": "basic",
+          "front": "Test deck 13 — front of card 3",
+          "back": "<b>Back 13.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "x7pxpz6mmu",
+          "type": "fill",
+          "prompt": "Test deck 13 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans13-4\">ans13-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "aimlbjgmmu",
+      "name": "Test Deck 14",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #14 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "lcqw44emmu",
+          "type": "basic",
+          "front": "Test deck 14 — front of card 1",
+          "back": "<b>Back 14.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "o029dtimmu",
+          "type": "fill",
+          "prompt": "Test deck 14 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans14-2\">ans14-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "k3wv9m6mmu",
+          "type": "basic",
+          "front": "Test deck 14 — front of card 3",
+          "back": "<b>Back 14.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "nwzpshtmmu",
+          "type": "fill",
+          "prompt": "Test deck 14 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans14-4\">ans14-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "3kugcb7mmu",
+          "type": "basic",
+          "front": "Test deck 14 — front of card 5",
+          "back": "<b>Back 14.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "pfg0n53mmu",
+      "name": "Test Deck 15",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #15 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "cs7qaiommu",
+          "type": "basic",
+          "front": "Test deck 15 — front of card 1",
+          "back": "<b>Back 15.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "2jruqzrmmu",
+          "type": "fill",
+          "prompt": "Test deck 15 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans15-2\">ans15-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "daf9ebwmmu",
+          "type": "basic",
+          "front": "Test deck 15 — front of card 3",
+          "back": "<b>Back 15.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "7putfjhmmu",
+          "type": "fill",
+          "prompt": "Test deck 15 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans15-4\">ans15-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "c143szjmmu",
+          "type": "basic",
+          "front": "Test deck 15 — front of card 5",
+          "back": "<b>Back 15.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "hhszafcmmu",
+          "type": "fill",
+          "prompt": "Test deck 15 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans15-6\">ans15-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "xpncw7rmmu",
+      "name": "Test Deck 16",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #16 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "9ltyc1immu",
+          "type": "basic",
+          "front": "Test deck 16 — front of card 1",
+          "back": "<b>Back 16.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "k6of084mmu",
+          "type": "fill",
+          "prompt": "Test deck 16 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans16-2\">ans16-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "nb66sscmmu",
+          "type": "basic",
+          "front": "Test deck 16 — front of card 3",
+          "back": "<b>Back 16.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "wo3g32dmmu",
+      "name": "Test Deck 17",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #17 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "rnkpr8gmmu",
+          "type": "basic",
+          "front": "Test deck 17 — front of card 1",
+          "back": "<b>Back 17.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "4v5shvammu",
+          "type": "fill",
+          "prompt": "Test deck 17 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans17-2\">ans17-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "wtqp3c2mmu",
+          "type": "basic",
+          "front": "Test deck 17 — front of card 3",
+          "back": "<b>Back 17.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "jt9o29dmmu",
+          "type": "fill",
+          "prompt": "Test deck 17 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans17-4\">ans17-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "ezearpcmmu",
+      "name": "Test Deck 18",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #18 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "txzn7z0mmu",
+          "type": "basic",
+          "front": "Test deck 18 — front of card 1",
+          "back": "<b>Back 18.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zkawn5ammu",
+          "type": "fill",
+          "prompt": "Test deck 18 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans18-2\">ans18-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "s7itaknmmu",
+          "type": "basic",
+          "front": "Test deck 18 — front of card 3",
+          "back": "<b>Back 18.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "8l33pmdmmu",
+          "type": "fill",
+          "prompt": "Test deck 18 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans18-4\">ans18-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "6iv0w83mmu",
+          "type": "basic",
+          "front": "Test deck 18 — front of card 5",
+          "back": "<b>Back 18.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "skdhjc5mmu",
+      "name": "Test Deck 19",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #19 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "sbkvg8emmu",
+          "type": "basic",
+          "front": "Test deck 19 — front of card 1",
+          "back": "<b>Back 19.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "hste6a3mmu",
+          "type": "fill",
+          "prompt": "Test deck 19 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans19-2\">ans19-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "qlfahlemmu",
+          "type": "basic",
+          "front": "Test deck 19 — front of card 3",
+          "back": "<b>Back 19.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "z6ruj3immu",
+          "type": "fill",
+          "prompt": "Test deck 19 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans19-4\">ans19-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "5bi0avemmu",
+          "type": "basic",
+          "front": "Test deck 19 — front of card 5",
+          "back": "<b>Back 19.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "gpu1v55mmu",
+          "type": "fill",
+          "prompt": "Test deck 19 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans19-6\">ans19-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "mnfh5phmmu",
+      "name": "Test Deck 20",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #20 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "2dk87qemmu",
+          "type": "basic",
+          "front": "Test deck 20 — front of card 1",
+          "back": "<b>Back 20.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "vggalgemmu",
+          "type": "fill",
+          "prompt": "Test deck 20 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans20-2\">ans20-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "utuaodammu",
+          "type": "basic",
+          "front": "Test deck 20 — front of card 3",
+          "back": "<b>Back 20.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "82e2qqymmu",
+      "name": "Test Deck 21",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #21 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "48sy87ummu",
+          "type": "basic",
+          "front": "Test deck 21 — front of card 1",
+          "back": "<b>Back 21.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "m7zcks9mmu",
+          "type": "fill",
+          "prompt": "Test deck 21 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans21-2\">ans21-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "5v4ab9qmmu",
+          "type": "basic",
+          "front": "Test deck 21 — front of card 3",
+          "back": "<b>Back 21.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ad6nfygmmu",
+          "type": "fill",
+          "prompt": "Test deck 21 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans21-4\">ans21-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "2l4iq45mmu",
+      "name": "Test Deck 22",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #22 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "wgqbz1mmmu",
+          "type": "basic",
+          "front": "Test deck 22 — front of card 1",
+          "back": "<b>Back 22.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "k41r0ssmmu",
+          "type": "fill",
+          "prompt": "Test deck 22 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans22-2\">ans22-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "0svpqp0mmu",
+          "type": "basic",
+          "front": "Test deck 22 — front of card 3",
+          "back": "<b>Back 22.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ajnz87vmmu",
+          "type": "fill",
+          "prompt": "Test deck 22 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans22-4\">ans22-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "cyasz01mmu",
+          "type": "basic",
+          "front": "Test deck 22 — front of card 5",
+          "back": "<b>Back 22.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d6gbdetmmu",
+      "name": "Test Deck 23",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #23 for persistence verification.",
+      "createdAt": 1782257269782,
+      "cards": [
+        {
+          "id": "dj79wdpmmu",
+          "type": "basic",
+          "front": "Test deck 23 — front of card 1",
+          "back": "<b>Back 23.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "cvov112mmu",
+          "type": "fill",
+          "prompt": "Test deck 23 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans23-2\">ans23-2</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "l1ea8wgmmu",
+          "type": "basic",
+          "front": "Test deck 23 — front of card 3",
+          "back": "<b>Back 23.3</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "wq2t5vmmmu",
+          "type": "fill",
+          "prompt": "Test deck 23 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans23-4\">ans23-4</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "e68za79mmu",
+          "type": "basic",
+          "front": "Test deck 23 — front of card 5",
+          "back": "<b>Back 23.5</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "xdkfoe0mmu",
+          "type": "fill",
+          "prompt": "Test deck 23 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans23-6\">ans23-6</span>.",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "fdqa5tsmmv",
+      "name": "Test Deck 24",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #24 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "46wz282mmu",
+          "type": "basic",
+          "front": "Test deck 24 — front of card 1",
+          "back": "<b>Back 24.1</b>",
+          "srs": {
+            "due": 1782257269782,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "n28mqdnmmu",
+          "type": "fill",
+          "prompt": "Test deck 24 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans24-2\">ans24-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "roxfheqmmv",
+          "type": "basic",
+          "front": "Test deck 24 — front of card 3",
+          "back": "<b>Back 24.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "09akaucmmv",
+      "name": "Test Deck 25",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #25 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "l958f9bmmv",
+          "type": "basic",
+          "front": "Test deck 25 — front of card 1",
+          "back": "<b>Back 25.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "p0ih408mmv",
+          "type": "fill",
+          "prompt": "Test deck 25 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans25-2\">ans25-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "eunrjd6mmv",
+          "type": "basic",
+          "front": "Test deck 25 — front of card 3",
+          "back": "<b>Back 25.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "u4wvf61mmv",
+          "type": "fill",
+          "prompt": "Test deck 25 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans25-4\">ans25-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "4b76qyhmmv",
+      "name": "Test Deck 26",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #26 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "9frrmevmmv",
+          "type": "basic",
+          "front": "Test deck 26 — front of card 1",
+          "back": "<b>Back 26.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "fffohc6mmv",
+          "type": "fill",
+          "prompt": "Test deck 26 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans26-2\">ans26-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "owxpzu6mmv",
+          "type": "basic",
+          "front": "Test deck 26 — front of card 3",
+          "back": "<b>Back 26.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "dwd7mhpmmv",
+          "type": "fill",
+          "prompt": "Test deck 26 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans26-4\">ans26-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "kpxp4r8mmv",
+          "type": "basic",
+          "front": "Test deck 26 — front of card 5",
+          "back": "<b>Back 26.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "zy70780mmv",
+      "name": "Test Deck 27",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #27 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "4f2uv5gmmv",
+          "type": "basic",
+          "front": "Test deck 27 — front of card 1",
+          "back": "<b>Back 27.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "5kidnt6mmv",
+          "type": "fill",
+          "prompt": "Test deck 27 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans27-2\">ans27-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "dq25lzrmmv",
+          "type": "basic",
+          "front": "Test deck 27 — front of card 3",
+          "back": "<b>Back 27.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "s3env3kmmv",
+          "type": "fill",
+          "prompt": "Test deck 27 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans27-4\">ans27-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "muisr9bmmv",
+          "type": "basic",
+          "front": "Test deck 27 — front of card 5",
+          "back": "<b>Back 27.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "fnvydt5mmv",
+          "type": "fill",
+          "prompt": "Test deck 27 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans27-6\">ans27-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "5x31i97mmv",
+      "name": "Test Deck 28",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #28 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "v1kbilmmmv",
+          "type": "basic",
+          "front": "Test deck 28 — front of card 1",
+          "back": "<b>Back 28.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "8ht3sfdmmv",
+          "type": "fill",
+          "prompt": "Test deck 28 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans28-2\">ans28-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "lydvkwtmmv",
+          "type": "basic",
+          "front": "Test deck 28 — front of card 3",
+          "back": "<b>Back 28.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "bukzym5mmv",
+      "name": "Test Deck 29",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #29 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "04gxtmimmv",
+          "type": "basic",
+          "front": "Test deck 29 — front of card 1",
+          "back": "<b>Back 29.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "6n79dkummv",
+          "type": "fill",
+          "prompt": "Test deck 29 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans29-2\">ans29-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "hi1576vmmv",
+          "type": "basic",
+          "front": "Test deck 29 — front of card 3",
+          "back": "<b>Back 29.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "vkwp4v7mmv",
+          "type": "fill",
+          "prompt": "Test deck 29 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans29-4\">ans29-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "xjhzfs0mmv",
+      "name": "Test Deck 30",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #30 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "erjfdigmmv",
+          "type": "basic",
+          "front": "Test deck 30 — front of card 1",
+          "back": "<b>Back 30.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "t4x1vh6mmv",
+          "type": "fill",
+          "prompt": "Test deck 30 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans30-2\">ans30-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "bqx3du4mmv",
+          "type": "basic",
+          "front": "Test deck 30 — front of card 3",
+          "back": "<b>Back 30.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "2ay7rdfmmv",
+          "type": "fill",
+          "prompt": "Test deck 30 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans30-4\">ans30-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "01u288gmmv",
+          "type": "basic",
+          "front": "Test deck 30 — front of card 5",
+          "back": "<b>Back 30.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "hbcdp2xmmv",
+      "name": "Test Deck 31",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #31 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "jrp2fq0mmv",
+          "type": "basic",
+          "front": "Test deck 31 — front of card 1",
+          "back": "<b>Back 31.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "xi2y4jommv",
+          "type": "fill",
+          "prompt": "Test deck 31 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans31-2\">ans31-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "azq88c7mmv",
+          "type": "basic",
+          "front": "Test deck 31 — front of card 3",
+          "back": "<b>Back 31.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "dypmmnmmmv",
+          "type": "fill",
+          "prompt": "Test deck 31 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans31-4\">ans31-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "hmf4ioommv",
+          "type": "basic",
+          "front": "Test deck 31 — front of card 5",
+          "back": "<b>Back 31.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "e5d3i9ymmv",
+          "type": "fill",
+          "prompt": "Test deck 31 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans31-6\">ans31-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "rnehgvfmmv",
+      "name": "Test Deck 32",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #32 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "crh2dfummv",
+          "type": "basic",
+          "front": "Test deck 32 — front of card 1",
+          "back": "<b>Back 32.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "bu7d5jgmmv",
+          "type": "fill",
+          "prompt": "Test deck 32 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans32-2\">ans32-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "nxbyrrsmmv",
+          "type": "basic",
+          "front": "Test deck 32 — front of card 3",
+          "back": "<b>Back 32.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "dpksnsxmmv",
+      "name": "Test Deck 33",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #33 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "4jl6ptjmmv",
+          "type": "basic",
+          "front": "Test deck 33 — front of card 1",
+          "back": "<b>Back 33.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "kuw6246mmv",
+          "type": "fill",
+          "prompt": "Test deck 33 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans33-2\">ans33-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "668izrtmmv",
+          "type": "basic",
+          "front": "Test deck 33 — front of card 3",
+          "back": "<b>Back 33.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ecs8t8tmmv",
+          "type": "fill",
+          "prompt": "Test deck 33 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans33-4\">ans33-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "yuhtww1mmv",
+      "name": "Test Deck 34",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #34 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "1pxsz1dmmv",
+          "type": "basic",
+          "front": "Test deck 34 — front of card 1",
+          "back": "<b>Back 34.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "v7e91h0mmv",
+          "type": "fill",
+          "prompt": "Test deck 34 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans34-2\">ans34-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ft7mk86mmv",
+          "type": "basic",
+          "front": "Test deck 34 — front of card 3",
+          "back": "<b>Back 34.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "vgpsac0mmv",
+          "type": "fill",
+          "prompt": "Test deck 34 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans34-4\">ans34-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "8r83nt3mmv",
+          "type": "basic",
+          "front": "Test deck 34 — front of card 5",
+          "back": "<b>Back 34.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "mhli0lammv",
+      "name": "Test Deck 35",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #35 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "7m1poo8mmv",
+          "type": "basic",
+          "front": "Test deck 35 — front of card 1",
+          "back": "<b>Back 35.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "tx9z5nlmmv",
+          "type": "fill",
+          "prompt": "Test deck 35 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans35-2\">ans35-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "4mljf1cmmv",
+          "type": "basic",
+          "front": "Test deck 35 — front of card 3",
+          "back": "<b>Back 35.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zkqj51ummv",
+          "type": "fill",
+          "prompt": "Test deck 35 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans35-4\">ans35-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "hdetutvmmv",
+          "type": "basic",
+          "front": "Test deck 35 — front of card 5",
+          "back": "<b>Back 35.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "8hw3np3mmv",
+          "type": "fill",
+          "prompt": "Test deck 35 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans35-6\">ans35-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "rvhq41ummv",
+      "name": "Test Deck 36",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #36 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "5d0msbymmv",
+          "type": "basic",
+          "front": "Test deck 36 — front of card 1",
+          "back": "<b>Back 36.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "2zpxe8cmmv",
+          "type": "fill",
+          "prompt": "Test deck 36 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans36-2\">ans36-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "7lp6fepmmv",
+          "type": "basic",
+          "front": "Test deck 36 — front of card 3",
+          "back": "<b>Back 36.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "lowk9qemmv",
+      "name": "Test Deck 37",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #37 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "lnwbl5smmv",
+          "type": "basic",
+          "front": "Test deck 37 — front of card 1",
+          "back": "<b>Back 37.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "kbdabkummv",
+          "type": "fill",
+          "prompt": "Test deck 37 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans37-2\">ans37-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "t6hq6ubmmv",
+          "type": "basic",
+          "front": "Test deck 37 — front of card 3",
+          "back": "<b>Back 37.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ev3pu0immv",
+          "type": "fill",
+          "prompt": "Test deck 37 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans37-4\">ans37-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "4aehb9mmmv",
+      "name": "Test Deck 38",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #38 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "dwr8zgammv",
+          "type": "basic",
+          "front": "Test deck 38 — front of card 1",
+          "back": "<b>Back 38.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ou1u1h4mmv",
+          "type": "fill",
+          "prompt": "Test deck 38 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans38-2\">ans38-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "2lwb0nvmmv",
+          "type": "basic",
+          "front": "Test deck 38 — front of card 3",
+          "back": "<b>Back 38.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "rfkt3d9mmv",
+          "type": "fill",
+          "prompt": "Test deck 38 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans38-4\">ans38-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1ajzohqmmv",
+          "type": "basic",
+          "front": "Test deck 38 — front of card 5",
+          "back": "<b>Back 38.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qnkewsgmmv",
+      "name": "Test Deck 39",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #39 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "5cu7f25mmv",
+          "type": "basic",
+          "front": "Test deck 39 — front of card 1",
+          "back": "<b>Back 39.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "5d2s7akmmv",
+          "type": "fill",
+          "prompt": "Test deck 39 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans39-2\">ans39-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zia5i5tmmv",
+          "type": "basic",
+          "front": "Test deck 39 — front of card 3",
+          "back": "<b>Back 39.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "xm3ceqnmmv",
+          "type": "fill",
+          "prompt": "Test deck 39 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans39-4\">ans39-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "mebv2mxmmv",
+          "type": "basic",
+          "front": "Test deck 39 — front of card 5",
+          "back": "<b>Back 39.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "6wpq90xmmv",
+          "type": "fill",
+          "prompt": "Test deck 39 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans39-6\">ans39-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "7f0x08ommv",
+      "name": "Test Deck 40",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #40 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "jvqmta1mmv",
+          "type": "basic",
+          "front": "Test deck 40 — front of card 1",
+          "back": "<b>Back 40.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "05l4weqmmv",
+          "type": "fill",
+          "prompt": "Test deck 40 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans40-2\">ans40-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "awae8mqmmv",
+          "type": "basic",
+          "front": "Test deck 40 — front of card 3",
+          "back": "<b>Back 40.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "zs5qbs2mmv",
+      "name": "Test Deck 41",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #41 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "dcee4qwmmv",
+          "type": "basic",
+          "front": "Test deck 41 — front of card 1",
+          "back": "<b>Back 41.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "enyre6jmmv",
+          "type": "fill",
+          "prompt": "Test deck 41 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans41-2\">ans41-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "174783ummv",
+          "type": "basic",
+          "front": "Test deck 41 — front of card 3",
+          "back": "<b>Back 41.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "3dmnb1ommv",
+          "type": "fill",
+          "prompt": "Test deck 41 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans41-4\">ans41-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "fwhso3nmmv",
+      "name": "Test Deck 42",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #42 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "inhm7phmmv",
+          "type": "basic",
+          "front": "Test deck 42 — front of card 1",
+          "back": "<b>Back 42.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "grpq2jgmmv",
+          "type": "fill",
+          "prompt": "Test deck 42 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans42-2\">ans42-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "nd6a1w1mmv",
+          "type": "basic",
+          "front": "Test deck 42 — front of card 3",
+          "back": "<b>Back 42.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "7bchjexmmv",
+          "type": "fill",
+          "prompt": "Test deck 42 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans42-4\">ans42-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "c308iuymmv",
+          "type": "basic",
+          "front": "Test deck 42 — front of card 5",
+          "back": "<b>Back 42.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "pu2wpremmv",
+      "name": "Test Deck 43",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #43 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "vvayh5vmmv",
+          "type": "basic",
+          "front": "Test deck 43 — front of card 1",
+          "back": "<b>Back 43.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "81opar1mmv",
+          "type": "fill",
+          "prompt": "Test deck 43 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans43-2\">ans43-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "37od8kxmmv",
+          "type": "basic",
+          "front": "Test deck 43 — front of card 3",
+          "back": "<b>Back 43.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "duridgummv",
+          "type": "fill",
+          "prompt": "Test deck 43 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans43-4\">ans43-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "oafg1xcmmv",
+          "type": "basic",
+          "front": "Test deck 43 — front of card 5",
+          "back": "<b>Back 43.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "d40nrvimmv",
+          "type": "fill",
+          "prompt": "Test deck 43 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans43-6\">ans43-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "drmfwbcmmv",
+      "name": "Test Deck 44",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #44 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "mt6czremmv",
+          "type": "basic",
+          "front": "Test deck 44 — front of card 1",
+          "back": "<b>Back 44.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "onq8m4dmmv",
+          "type": "fill",
+          "prompt": "Test deck 44 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans44-2\">ans44-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "89a4u26mmv",
+          "type": "basic",
+          "front": "Test deck 44 — front of card 3",
+          "back": "<b>Back 44.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "hldzq20mmv",
+      "name": "Test Deck 45",
+      "subjectId": "1t5r01rbw",
+      "description": "Auto-generated test deck #45 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "g74qri5mmv",
+          "type": "basic",
+          "front": "Test deck 45 — front of card 1",
+          "back": "<b>Back 45.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ieeke53mmv",
+          "type": "fill",
+          "prompt": "Test deck 45 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans45-2\">ans45-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1vfak07mmv",
+          "type": "basic",
+          "front": "Test deck 45 — front of card 3",
+          "back": "<b>Back 45.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "70kl2mlmmv",
+          "type": "fill",
+          "prompt": "Test deck 45 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans45-4\">ans45-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d4492pqmmv",
+      "name": "Test Deck 46",
+      "subjectId": "1t5r1gbtu",
+      "description": "Auto-generated test deck #46 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "m86ls8vmmv",
+          "type": "basic",
+          "front": "Test deck 46 — front of card 1",
+          "back": "<b>Back 46.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "r0ftd8qmmv",
+          "type": "fill",
+          "prompt": "Test deck 46 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans46-2\">ans46-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "y4psabcmmv",
+          "type": "basic",
+          "front": "Test deck 46 — front of card 3",
+          "back": "<b>Back 46.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "blp8jgbmmv",
+          "type": "fill",
+          "prompt": "Test deck 46 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans46-4\">ans46-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "gbggxs0mmv",
+          "type": "basic",
+          "front": "Test deck 46 — front of card 5",
+          "back": "<b>Back 46.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "2jnqihqmmv",
+      "name": "Test Deck 47",
+      "subjectId": "1t5r2cz4n",
+      "description": "Auto-generated test deck #47 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "cbfga4ommv",
+          "type": "basic",
+          "front": "Test deck 47 — front of card 1",
+          "back": "<b>Back 47.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "eugsxklmmv",
+          "type": "fill",
+          "prompt": "Test deck 47 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans47-2\">ans47-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "pzvvy02mmv",
+          "type": "basic",
+          "front": "Test deck 47 — front of card 3",
+          "back": "<b>Back 47.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "qblv5oymmv",
+          "type": "fill",
+          "prompt": "Test deck 47 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans47-4\">ans47-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "sqct6jfmmv",
+          "type": "basic",
+          "front": "Test deck 47 — front of card 5",
+          "back": "<b>Back 47.5</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "7yy323immv",
+          "type": "fill",
+          "prompt": "Test deck 47 fill card 6: the answer is <span class=\"blank\" data-answer=\"ans47-6\">ans47-6</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "i4pkihvmmv",
+      "name": "Test Deck 48",
+      "subjectId": "nn57ngr7cw",
+      "description": "Auto-generated test deck #48 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "0k06dp1mmv",
+          "type": "basic",
+          "front": "Test deck 48 — front of card 1",
+          "back": "<b>Back 48.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "73u03wwmmv",
+          "type": "fill",
+          "prompt": "Test deck 48 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans48-2\">ans48-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "lgqatvommv",
+          "type": "basic",
+          "front": "Test deck 48 — front of card 3",
+          "back": "<b>Back 48.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "65tqg4kmmv",
+      "name": "Test Deck 49",
+      "subjectId": "zlfuwo27cw",
+      "description": "Auto-generated test deck #49 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "wuhyw52mmv",
+          "type": "basic",
+          "front": "Test deck 49 — front of card 1",
+          "back": "<b>Back 49.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "fw3pougmmv",
+          "type": "fill",
+          "prompt": "Test deck 49 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans49-2\">ans49-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "ql5qhmemmv",
+          "type": "basic",
+          "front": "Test deck 49 — front of card 3",
+          "back": "<b>Back 49.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "wkurh8lmmv",
+          "type": "fill",
+          "prompt": "Test deck 49 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans49-4\">ans49-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "rdqx7uommv",
+      "name": "Test Deck 50",
+      "subjectId": "rmqxu9pozf",
+      "description": "Auto-generated test deck #50 for persistence verification.",
+      "createdAt": 1782257269783,
+      "cards": [
+        {
+          "id": "eu3m4x9mmv",
+          "type": "basic",
+          "front": "Test deck 50 — front of card 1",
+          "back": "<b>Back 50.1</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "zbxnkogmmv",
+          "type": "fill",
+          "prompt": "Test deck 50 fill card 2: the answer is <span class=\"blank\" data-answer=\"ans50-2\">ans50-2</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "iurplb6mmv",
+          "type": "basic",
+          "front": "Test deck 50 — front of card 3",
+          "back": "<b>Back 50.3</b>",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "njdhlxfmmv",
+          "type": "fill",
+          "prompt": "Test deck 50 fill card 4: the answer is <span class=\"blank\" data-answer=\"ans50-4\">ans50-4</span>.",
+          "srs": {
+            "due": 1782257269783,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1tjkzwymmv",
+          "type": "basic",
+          "front": "Test deck 50 — front of card 5",
+          "back": "<b>Back 50.5</b>",
+          "srs": {
+            "due": 1782257269783,
             "interval": 0,
             "ease": 2.5,
             "reps": 0,

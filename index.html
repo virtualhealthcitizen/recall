@@ -620,26 +620,55 @@
   function seed() {
     const sp = { id: uid(), name: "Spanish", color: SUBJECT_COLORS[0] };
     const bio = { id: uid(), name: "Biology", color: SUBJECT_COLORS[1] };
-    state.subjects = [sp, bio];
+    const cs = { id: uid(), name: "Programming", color: SUBJECT_COLORS[2] };
+    const geo = { id: uid(), name: "Geography", color: SUBJECT_COLORS[4] };
+    const hist = { id: uid(), name: "History", color: SUBJECT_COLORS[6] };
+    const math = { id: uid(), name: "Mathematics", color: SUBJECT_COLORS[7] };
+    state.subjects = [sp, bio, cs, geo, hist, math];
     const newSrs = () => ({ due: Date.now(), interval: 0, ease: 2.5, reps: 0, lapses: 0 });
+    const deck = (name, subjectId, description, cards) => ({ id: uid(), name, subjectId, description, createdAt: Date.now(), cards });
+    const basic = (front, back) => ({ id: uid(), type: "basic", front, back, srs: newSrs() });
+    const fill = (prompt) => ({ id: uid(), type: "fill", prompt, srs: newSrs() });
     state.decks = [
-      {
-        id: uid(), name: "Travel basics", subjectId: sp.id,
-        description: "Everyday words and phrases for getting around.", createdAt: Date.now(),
-        cards: [
-          { id: uid(), type: "basic", front: "the airport", back: "<b>el aeropuerto</b>", srs: newSrs() },
-          { id: uid(), type: "basic", front: "Where is the station?", back: "¿Dónde está <b>la estación</b>?", srs: newSrs() },
-          { id: uid(), type: "fill", prompt: 'Quiero comprar un <span class="blank" data-answer="billete|boleto">billete</span> de tren.', srs: newSrs() },
-        ],
-      },
-      {
-        id: uid(), name: "Cell biology", subjectId: bio.id,
-        description: "Organelles and the basics of the cell.", createdAt: Date.now(),
-        cards: [
-          { id: uid(), type: "basic", front: "Powerhouse of the cell", back: "The <b>mitochondrion</b>", srs: newSrs() },
-          { id: uid(), type: "fill", prompt: 'The <span class="blank" data-answer="nucleus">nucleus</span> holds the cell\'s genetic material.', srs: newSrs() },
-        ],
-      },
+      deck("Travel basics", sp.id, "Everyday words and phrases for getting around.", [
+        basic("the airport", "<b>el aeropuerto</b>"),
+        basic("Where is the station?", "¿Dónde está <b>la estación</b>?"),
+        fill('Quiero comprar un <span class="blank" data-answer="billete|boleto">billete</span> de tren.'),
+      ]),
+      deck("Common Spanish verbs", sp.id, "High-frequency verbs and forms.", [
+        basic("to eat", "<b>comer</b>"),
+        basic("to have (possess)", "<b>tener</b>"),
+        fill('“We speak” is <span class="blank" data-answer="hablamos">hablamos</span>.'),
+        fill('The verb <span class="blank" data-answer="ser|estar">ser</span> means “to be”.'),
+      ]),
+      deck("Cell biology", bio.id, "Organelles and the basics of the cell.", [
+        basic("Powerhouse of the cell", "The <b>mitochondrion</b>"),
+        fill('The <span class="blank" data-answer="nucleus">nucleus</span> holds the cell\'s genetic material.'),
+      ]),
+      deck("JavaScript fundamentals", cs.id, "Core language quirks and built-ins.", [
+        basic("What does <code>typeof null</code> evaluate to?", '<code>"object"</code> — a long-standing language quirk.'),
+        basic("Falsy values in JavaScript", '<ul><li><code>false</code></li><li><code>0</code></li><li><code>""</code> (empty string)</li><li><code>null</code></li><li><code>undefined</code></li><li><code>NaN</code></li></ul>'),
+        fill('Add an item to the end of an array with <span class="blank" data-answer="push">push</span>.'),
+        fill('<span class="blank" data-answer="const">const</span> declares a block-scoped constant.'),
+      ]),
+      deck("World capitals", geo.id, "Match countries to their capital cities.", [
+        basic("Capital of Japan", "<b>Tokyo</b>"),
+        basic("Capital of Australia", '<b>Canberra</b> <span style="color:#888">(not Sydney)</span>'),
+        basic("Capital of Canada", "<b>Ottawa</b>"),
+        fill('The capital of France is <span class="blank" data-answer="Paris">Paris</span>.'),
+        fill('The capital of Egypt is <span class="blank" data-answer="Cairo">Cairo</span>.'),
+      ]),
+      deck("Ancient Rome", hist.id, "People, places and dates of the Roman world.", [
+        basic("Who was the first Roman emperor?", "<b>Augustus</b> (born Octavian)"),
+        basic('<div style="text-align:center">Crossing which river in 49 BC began a civil war?</div>', '<div style="text-align:center">The <b>Rubicon</b> — “the die is cast.”</div>'),
+        fill('By legend, Rome was founded in <span class="blank" data-answer="753 BC|753 BCE">753 BC</span>.'),
+      ]),
+      deck("Math quick facts", math.id, "Constants, formulas and mental math.", [
+        basic("π to 4 decimal places", "<b>3.1416</b>"),
+        basic("Area of a circle", '<div style="text-align:center"><b>A = πr²</b></div>'),
+        fill('The square root of 144 is <span class="blank" data-answer="12">12</span>.'),
+        fill('Seven times eight is <span class="blank" data-answer="56">56</span>.'),
+      ]),
     ];
   }
   /* ----- Persistence: decks live in the browser's own internal storage and are

@@ -1,0 +1,462 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-23T23:02:18.592Z",
+  "subjects": [
+    {
+      "id": "nn57ngr7cw",
+      "name": "Spanish",
+      "color": "#5b53d6"
+    },
+    {
+      "id": "zlfuwo27cw",
+      "name": "Biology",
+      "color": "#2f9e72"
+    },
+    {
+      "id": "rmqxu9pozf",
+      "name": "Software Development",
+      "color": "#9b51e0"
+    },
+    {
+      "id": "1t5r01rbw",
+      "name": "Geography",
+      "color": "#2b8ad6"
+    },
+    {
+      "id": "1t5r1gbtu",
+      "name": "History",
+      "color": "#e05299"
+    },
+    {
+      "id": "1t5r2cz4n",
+      "name": "Mathematics",
+      "color": "#0f9b96"
+    }
+  ],
+  "decks": [
+    {
+      "id": "tkvytj37cw",
+      "name": "Travel basics",
+      "subjectId": "nn57ngr7cw",
+      "description": "Everyday words and phrases for getting around.",
+      "createdAt": 1781710768256,
+      "cards": [
+        {
+          "id": "9rwt3wf7cw",
+          "type": "basic",
+          "front": "the airport",
+          "back": "<b>el aeropuerto</b>",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "89m4t4z7cw",
+          "type": "basic",
+          "front": "Where is the station?",
+          "back": "¿Dónde está <b>la estación</b>?",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "iiot4fg7cw",
+          "type": "fill",
+          "prompt": "Quiero comprar un <span class=\"blank\" data-answer=\"billete|boleto\">billete</span> de tren.",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "efxu2sq7cw",
+      "name": "Cell biology",
+      "subjectId": "zlfuwo27cw",
+      "description": "Organelles and the basics of the cell.",
+      "createdAt": 1781710768256,
+      "cards": [
+        {
+          "id": "sxq1kmy7cw",
+          "type": "basic",
+          "front": "Powerhouse of the cell",
+          "back": "The <b>mitochondrion</b>",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "tvwr25e7cw",
+          "type": "fill",
+          "prompt": "The <span class=\"blank\" data-answer=\"nucleus\">nucleus</span> holds the cell's genetic material.",
+          "srs": {
+            "due": 1781710768256,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "8aruai0946",
+      "name": "Spring framework",
+      "subjectId": "rmqxu9pozf",
+      "description": "Test your knowledge on Spring framework",
+      "createdAt": 1782141452070,
+      "cards": [
+        {
+          "id": "5k6nj530wq",
+          "type": "fill",
+          "prompt": "<code><span class=\"blank\" data-answer=\"@Profile\" contenteditable=\"false\">@Profile</span></code> is an example of a conditional configuration. When you annotate a component with <code><span class=\"blank\" data-answer=\"@Profile\" contenteditable=\"false\">@Profile</span></code>, the component is initialized conditionally when a specified profile is active.",
+          "srs": {
+            "due": 1782141534746,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "th3u64v0q1",
+          "type": "basic",
+          "front": "<div>When you build a web application, you have to decide which development stack you want.</div><div>There are two types of Spring MVC applications:</div><div><ul><li>Web Servlet (Traditional Spring MVC)</li><li>Web Reactive</li></ul><div>Describe the&nbsp;<b>Web Reactive</b>&nbsp;development stack.</div></div>",
+          "back": "<div><b>Web Reactive</b>: This is the new way of building web applications using Spring WebFlux.</div><div><ul><li>Newer, more efficient</li><li>Non-blocking</li><li>Based on the Reactive Streams API</li><li>Requires knowledge of reactive programming</li><li>Uses the <code>DispatcherHandler</code> to handle requests</li><li>Netty, Undertow, Servlet 3.1+</li><li>Specification</li></ul></div>",
+          "srs": {
+            "due": 1782141674473,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "3lcb7wpuf5",
+          "type": "basic",
+          "front": "<div>Describe the following Spring Boot auto-configuration property:</div><div><br></div><div><code>spring.jpa.properties.hibernate.xxx=???</code></div>",
+          "back": "This is a placeholder for any Hibernate property that you want to set.",
+          "srs": {
+            "due": 1782141759617,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "1t5r8787m",
+      "name": "World capitals",
+      "subjectId": "1t5r01rbw",
+      "description": "Match countries to their capital cities.",
+      "createdAt": 1782255738591,
+      "cards": [
+        {
+          "id": "1t5r3ij4k",
+          "type": "basic",
+          "front": "Capital of Japan",
+          "back": "<b>Tokyo</b>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5r479lo",
+          "type": "basic",
+          "front": "Capital of Australia",
+          "back": "<b>Canberra</b> <span style=\"color:#888\">(not Sydney)</span>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5r59w1c",
+          "type": "basic",
+          "front": "Capital of Canada",
+          "back": "<b>Ottawa</b>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5r6829p",
+          "type": "fill",
+          "prompt": "The capital of France is <span class=\"blank\" data-answer=\"Paris\">Paris</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5r7ejjz",
+          "type": "fill",
+          "prompt": "The capital of Egypt is <span class=\"blank\" data-answer=\"Cairo\">Cairo</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "1t5rd2gr2",
+      "name": "JavaScript fundamentals",
+      "subjectId": "rmqxu9pozf",
+      "description": "Core language quirks and built-ins.",
+      "createdAt": 1782255738591,
+      "cards": [
+        {
+          "id": "1t5r93caf",
+          "type": "basic",
+          "front": "What does <code>typeof null</code> evaluate to?",
+          "back": "<code>\"object\"</code> — a long-standing language quirk.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5ra8vw5",
+          "type": "basic",
+          "front": "Falsy values in JavaScript",
+          "back": "<ul><li><code>false</code></li><li><code>0</code></li><li><code>\"\"</code> (empty string)</li><li><code>null</code></li><li><code>undefined</code></li><li><code>NaN</code></li></ul>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rbf5or",
+          "type": "fill",
+          "prompt": "Add an item to the end of an array with <span class=\"blank\" data-answer=\"push\">push</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rcjvgj",
+          "type": "fill",
+          "prompt": "<span class=\"blank\" data-answer=\"const\">const</span> declares a block-scoped constant.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "1t5rhg770",
+      "name": "Ancient Rome",
+      "subjectId": "1t5r1gbtu",
+      "description": "People, places and dates of the Roman world.",
+      "createdAt": 1782255738591,
+      "cards": [
+        {
+          "id": "1t5redmlj",
+          "type": "basic",
+          "front": "Who was the first Roman emperor?",
+          "back": "<b>Augustus</b> (born Octavian)",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rf7yb4",
+          "type": "basic",
+          "front": "<div style=\"text-align:center\">Crossing which river in 49 BC began a civil war?</div>",
+          "back": "<div style=\"text-align:center\">The <b>Rubicon</b> — &quot;the die is cast.&quot;</div>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rg7go1",
+          "type": "fill",
+          "prompt": "By legend, Rome was founded in <span class=\"blank\" data-answer=\"753 BC|753 BCE\">753 BC</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "1t5rm13wf",
+      "name": "Common Spanish verbs",
+      "subjectId": "nn57ngr7cw",
+      "description": "High-frequency verbs and forms.",
+      "createdAt": 1782255738591,
+      "cards": [
+        {
+          "id": "1t5rij5dw",
+          "type": "basic",
+          "front": "to eat",
+          "back": "<b>comer</b>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rjd67r",
+          "type": "basic",
+          "front": "to have (possess)",
+          "back": "<b>tener</b>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rkesdm",
+          "type": "fill",
+          "prompt": "&quot;We speak&quot; is <span class=\"blank\" data-answer=\"hablamos\">hablamos</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rlhtdi",
+          "type": "fill",
+          "prompt": "The verb <span class=\"blank\" data-answer=\"ser|estar\">ser</span> means &quot;to be&quot;.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "1t5sr8bum",
+      "name": "Math quick facts",
+      "subjectId": "1t5r2cz4n",
+      "description": "Constants, formulas and mental math.",
+      "createdAt": 1782255738592,
+      "cards": [
+        {
+          "id": "1t5rni2yn",
+          "type": "basic",
+          "front": "π to 4 decimal places",
+          "back": "<b>3.1416</b>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5roa338",
+          "type": "basic",
+          "front": "Area of a circle",
+          "back": "<div style=\"text-align:center\"><b>A = πr²</b></div>",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rpdraz",
+          "type": "fill",
+          "prompt": "The square root of 144 is <span class=\"blank\" data-answer=\"12\">12</span>.",
+          "srs": {
+            "due": 1782255738591,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        },
+        {
+          "id": "1t5rqcgiz",
+          "type": "fill",
+          "prompt": "Seven times eight is <span class=\"blank\" data-answer=\"56\">56</span>.",
+          "srs": {
+            "due": 1782255738592,
+            "interval": 0,
+            "ease": 2.5,
+            "reps": 0,
+            "lapses": 0
+          }
+        }
+      ]
+    }
+  ]
+}

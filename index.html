@@ -182,8 +182,14 @@
         .deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
         .deck-card {
             background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-            padding: 18px; box-shadow: var(--shadow-1); transition: .16s; cursor: pointer;
-            display: flex; flex-direction: column; gap: 12px; position: relative;
+            padding: 18px 18px 18px 21px; box-shadow: var(--shadow-1); transition: .16s; cursor: pointer;
+            display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden;
+        }
+        /* Topic colour stripe down the left edge — decks inherit their subject's colour
+           unless given one of their own in the deck editor. */
+        .deck-card::before {
+            content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+            background: var(--deck-accent, transparent);
         }
         .deck-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--line-strong); }
         .deck-card-top { display: flex; align-items: flex-start; gap: 12px; }
@@ -356,9 +362,21 @@
         .hint code { font-family: var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 5px; font-size: 11.5px; }
 
         /* color swatches */
-        .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+        .swatches { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
         .swatch { width: 26px; height: 26px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; }
         .swatch.on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); }
+        /* "custom colour" swatch: a rainbow tile that opens the native colour picker */
+        .swatch-custom {
+            position: relative; display: grid; place-items: center; overflow: hidden;
+            color: #fff; font-weight: 700; font-size: 15px; line-height: 1;
+            text-shadow: 0 1px 2px rgba(0,0,0,.45);
+            background: conic-gradient(from 0deg, #f54b4b, #f5b04b, #f5f04b, #4bf57a, #4bc7f5, #6a4bf5, #f54bd2, #f54b4b);
+        }
+        .swatch-custom input[type=color] { position: absolute; inset: 0; opacity: 0; cursor: pointer; border: none; padding: 0; }
+
+        /* live preview in the deck editor — looks like a real deck card but inert */
+        .deck-preview { cursor: default; max-width: 320px; }
+        .deck-preview:hover { transform: none; box-shadow: var(--shadow-1); border-color: var(--line); }
 
         /* subjects manager rows */
         .subj-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
@@ -850,6 +868,9 @@
 
   function subjectById(id) { return state.subjects.find(s => s.id === id); }
   function deckById(id) { return state.decks.find(d => d.id === id); }
+  // A deck shows its own colour if set, otherwise inherits its subject's (the
+  // "topic" colour), falling back to a neutral grey for uncategorized decks.
+  function deckColor(deck) { return deck.color || subjectById(deck.subjectId)?.color || "#9aa0ad"; }
   function decksInSubject(id) { return state.decks.filter(d => (id === "__uncat" ? !subjectById(d.subjectId) : d.subjectId === id)); }
   function isDue(card) { return (card.srs?.due ?? 0) <= Date.now(); }
   function isMastered(card) { return (card.srs?.reps ?? 0) > 0 && (card.srs?.interval ?? 0) >= 4; }
@@ -902,7 +923,7 @@
       nav.appendChild(item);
       decks.forEach(d => {
         const da = ui.view === "deck" && ui.deckId === d.id ? "active" : "";
-        const di = el("button", `nav-item nav-deck ${da}`, `<span>${escapeAttr(d.name)}</span><span class="count">${d.cards.length}</span>`);
+        const di = el("button", `nav-item nav-deck ${da}`, `<span class="dot" style="background:${deckColor(d)}"></span><span>${escapeAttr(d.name)}</span><span class="count">${d.cards.length}</span>`);
         di.onclick = () => { ui.view = "deck"; ui.deckId = d.id; render(); closeSidebar(); };
         nav.appendChild(di);
       });
@@ -937,6 +958,7 @@
     const st = deckStats(deck);
     const subj = subjectById(deck.subjectId);
     const node = el("div", "deck-card");
+    node.style.setProperty("--deck-accent", deckColor(deck));
     node.innerHTML = `
     <div class="deck-card-top">
       <div style="flex:1;min-width:0">
@@ -1032,7 +1054,7 @@
     const head = el("div", "page-head");
     head.innerHTML = `
     <div>
-      <div class="eyebrow"><span style="cursor:pointer" id="bcAll">All decks</span> ›
+      <div class="eyebrow"><span class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${deckColor(deck)};margin-right:6px;vertical-align:middle"></span><span style="cursor:pointer" id="bcAll">All decks</span> ›
         <span style="cursor:pointer" id="bcSubj">${escapeAttr(subj ? subj.name : "Uncategorized")}</span></div>
       <h1 class="page-title">${escapeAttr(deck.name)}</h1>
       <p class="page-sub">${escapeAttr(deck.description || "No description.")}</p>
@@ -1139,7 +1161,7 @@
     const n = el("div");
     const opts = state.subjects.map(s => `<option value="${s.id}" ${editing ? (editing.subjectId === s.id ? "selected" : "") : (presetSubjectId === s.id ? "selected" : "")}>${escapeAttr(s.name)}</option>`).join("");
     n.innerHTML = `
-    <div class="modal-head"><h2>${editing ? "Edit deck" : "New deck"}</h2><p>Decks group related cards. Assign a subject to keep things tidy.</p></div>
+    <div class="modal-head"><h2>${editing ? "Edit deck" : "New deck"}</h2><p>Decks group related cards. Pick a subject and colour to keep things tidy.</p></div>
     <div class="modal-body">
       <div class="field"><label>Deck name</label><input class="input" id="dName" placeholder="e.g. Irregular verbs" value="${editing ? escapeAttr(editing.name) : ""}"/></div>
       <div class="field"><label>Subject</label>
@@ -1148,29 +1170,89 @@
           <button class="btn btn-sm" id="dNewSubj">＋ New</button>
         </div>
       </div>
+      <div class="field"><label>Colour <span style="color:var(--ink-faint);font-weight:400">— for colour-coding by topic</span></label>
+        <div class="swatches" id="dSwatches"></div>
+      </div>
       <div class="field"><label>Description <span style="color:var(--ink-faint);font-weight:400">(optional)</span></label>
         <textarea class="input" id="dDesc" rows="2" placeholder="What's in this deck?">${editing ? escapeAttr(editing.description || "") : ""}</textarea></div>
+      <div class="field" style="margin-bottom:0"><label>Preview</label><div id="dPreview"></div></div>
     </div>
     <div class="modal-foot"><button class="btn" data-close>Cancel</button><button class="btn btn-primary" id="dSave">${editing ? "Save changes" : "Create deck"}</button></div>`;
     openModal(n);
+
+    // ----- Colour state. A deck without its own colour inherits its subject's, so
+    // until the user picks one explicitly we keep the choice in sync with the subject. -----
+    const subjColorFor = id => subjectById(id)?.color;
+    const startSubj = editing ? editing.subjectId : (presetSubjectId || null);
+    let color = editing ? deckColor(editing) : (subjColorFor(startSubj) || SUBJECT_COLORS[0]);
+    let colorTouched = editing ? !!editing.color : false;
+
+    const swatchWrap = $("#dSwatches");
+    function drawSwatches() {
+      const inPalette = SUBJECT_COLORS.includes(color);
+      swatchWrap.innerHTML = SUBJECT_COLORS.map(c =>
+        `<span class="swatch ${c === color ? "on" : ""}" data-color="${c}" style="background:${c}" title="${c}"></span>`).join("")
+        + `<label class="swatch swatch-custom ${inPalette ? "" : "on"}" title="Custom colour"${inPalette ? "" : ` style="background:${color}"`}>
+             <input type="color" id="dCustom" value="${color}"/>${inPalette ? "＋" : ""}
+           </label>`;
+      swatchWrap.querySelectorAll(".swatch[data-color]").forEach(sw =>
+        sw.onclick = () => { color = sw.dataset.color; colorTouched = true; drawSwatches(); drawPreview(); });
+      $("#dCustom").oninput = e => { color = e.target.value; colorTouched = true; drawSwatches(); drawPreview(); };
+    }
+
+    const preview = $("#dPreview");
+    function drawPreview() {
+      const name = $("#dName").value.trim() || "Untitled deck";
+      const subj = subjectById($("#dSubj").value);
+      const desc = $("#dDesc").value.trim() || "No description.";
+      preview.innerHTML = `<div class="deck-card deck-preview" style="--deck-accent:${color}">
+        <div class="deck-card-top"><div style="flex:1;min-width:0">
+          <h3>${escapeAttr(name)}</h3>
+          <span class="chip"><span class="dot" style="background:${subj ? subj.color : "#9aa0ad"}"></span>${escapeAttr(subj ? subj.name : "Uncategorized")}</span>
+        </div></div>
+        <p class="desc">${escapeAttr(desc)}</p></div>`;
+    }
+
+    // Follow the subject's colour until the user overrides it.
+    function syncColorToSubject() {
+      if (colorTouched) return;
+      const c = subjColorFor($("#dSubj").value);
+      if (c) { color = c; drawSwatches(); }
+    }
+
+    drawSwatches();
+    drawPreview();
     $("#dName").focus();
+    $("#dName").addEventListener("input", drawPreview);
+    $("#dDesc").addEventListener("input", drawPreview);
+    $("#dSubj").onchange = () => { syncColorToSubject(); drawPreview(); };
+
     $("#dNewSubj").onclick = () => openSubjectsManager(() => {
       const sel = $("#dSubj");
       sel.innerHTML = `<option value="">Uncategorized</option>` + state.subjects.map(s => `<option value="${s.id}">${escapeAttr(s.name)}</option>`).join("");
       if (state.subjects.length) sel.value = state.subjects[state.subjects.length - 1].id;
+      syncColorToSubject(); drawPreview();
     });
-    $("#dSave").onclick = () => {
+
+    function save() {
       const name = $("#dName").value.trim();
-      if (!name) { toast("Give the deck a name"); return; }
+      if (!name) { toast("Give the deck a name"); $("#dName").focus(); return; }
       const subjectId = $("#dSubj").value || null;
       const description = $("#dDesc").value.trim();
-      if (editing) { Object.assign(editing, { name, subjectId, description }); toast("Deck updated"); }
+      if (editing) { Object.assign(editing, { name, subjectId, description, color }); toast("Deck updated"); }
       else {
-        const d = { id: uid(), name, subjectId, description, createdAt: Date.now(), cards: [] };
+        const d = { id: uid(), name, subjectId, description, color, createdAt: Date.now(), cards: [] };
         state.decks.push(d); ui.view = "deck"; ui.deckId = d.id; toast("Deck created");
       }
       closeModal(); render();
-    };
+    }
+    $("#dSave").onclick = save;
+    // Enter in the name field, or Ctrl/Cmd+Enter anywhere, commits; Esc cancels.
+    $("#dName").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); save(); } });
+    n.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); save(); }
+      else if (e.key === "Escape") { e.preventDefault(); closeModal(); }
+    });
   }
 
   /* ----- Subjects manager ----- */
@@ -2060,7 +2142,13 @@
   // location — turn on Firefox's "Always ask you where to save files" for a prompt.
   async function exportData() {
     const json = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), ...state }, null, 2);
-    const suggestedName = `recall-flashcards-${new Date().toISOString().slice(0, 10)}.json`;
+    // Filename-safe local datetime (YYYY-MM-DD_HH-MM-SS) so multiple exports on the
+    // same day don't collide and sort chronologically. Colons/periods from ISO are
+    // illegal/awkward in filenames, so build it from local date parts instead.
+    const now = new Date();
+    const p = (n) => String(n).padStart(2, "0");
+    const stamp = `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}_${p(now.getHours())}-${p(now.getMinutes())}-${p(now.getSeconds())}`;
+    const suggestedName = `recall-flashcards-${stamp}.json`;
     if (window.showSaveFilePicker) {
       try {
         const handle = await window.showSaveFilePicker({

@@ -18,6 +18,15 @@ runs anywhere you can serve a static file.
   reopen the app; no manual saving needed
 - **Export / Import** to JSON for backups or moving data between devices
 
+## Project layout
+
+```
+index.html    # the entire app — markup, styles, and vanilla JS (no build step)
+serve.js      # zero-dependency static server (Node stdlib only)
+exports/      # sample JSON exports you can Import to try the app
+.claude/      # editor launch config (runs serve.js)
+```
+
 ## Requirements
 
 - [Node.js](https://nodejs.org/) 14 or newer (no npm install required — the

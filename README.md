@@ -4,6 +4,8 @@ A simple, fast flashcards app for studying with spaced repetition. The entire
 app is a single self-contained `index.html` (vanilla JS, no build step), so it
 runs anywhere you can serve a static file.
 
+![Recall demo](demo.gif)
+
 ## Features
 
 - Organize cards into **decks** grouped by **subject**

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Validate app
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Recall is a zero-dependency, single-file app (no npm install, no build
+      # step). CI validates the server script and the single-file app instead.
+      - name: Syntax-check the server
+        run: node --check serve.js
+
+      - name: Check required files are present
+        run: |
+          for f in index.html serve.js README.md; do
+            if [ ! -f "$f" ]; then
+              echo "Missing required file: $f"
+              exit 1
+            fi
+          done
+          echo "All required files present."
+
+      - name: Smoke-test the static server
+        run: |
+          node serve.js &
+          SERVER_PID=$!
+          # Give the server a moment to start listening.
+          for i in $(seq 1 20); do
+            if curl -fsS "http://localhost:4173/" -o /dev/null; then
+              echo "Server responded on /"
+              break
+            fi
+            sleep 0.5
+          done
+          # Fetch the app and the exports index; fail the job on any error.
+          curl -fsS "http://localhost:4173/" -o /dev/null
+          curl -fsS "http://localhost:4173/index.html" -o /dev/null
+          kill "$SERVER_PID"
+          echo "Static server smoke test passed."

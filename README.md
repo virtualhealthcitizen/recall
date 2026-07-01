@@ -1,5 +1,8 @@
 # Recall
 
+[![CI](https://github.com/virtualhealthcitizen/recall/actions/workflows/ci.yml/badge.svg)](https://github.com/virtualhealthcitizen/recall/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/virtualhealthcitizen/recall)](https://github.com/virtualhealthcitizen/recall/releases/latest)
+
 A simple, fast flashcards app for studying with spaced repetition. The entire
 app is a single self-contained `index.html` (vanilla JS, no build step), so it
 runs anywhere you can serve a static file.
